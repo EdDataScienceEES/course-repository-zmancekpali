@@ -1,19 +1,12 @@
-# Course_Repository_Challenge_2023
-Create your own repository for the Data Science in Ecology and Environmental Science Course
+#Course Repository 2023 - Zoja Manček Páli
+Data Science in Ecology and Environmental Science Course
 
 ## Course Repository Challenge Instructions - GitHub and version control
 
 Challenge start time: Thurs 5 Oct 2023
 Challenge end time: 12 noon Fri 1 Dec 2023
 
-## Challenge description
-
-Once you've accepted this challenge, a repository gets automatically generated for you - this will be your own private repository for the duration of the course. The challenge this week is to fully organise this repository and make sure it is all set up for you to begin working in it. Since this is your repository, it is up to you to decide how it looks. We have included some guidelines below and the required files and folders, but beyond that, this is an opportunity for you to think about your workflow and how you will organise your coding!
-
-The challenge is based on the Coding Club Intro to GitHub and version control tutorial and the readings for week 3. 
-
 ## What to include:
-
 - Course readings - Up to you to decide how you'll organise those.
 - Folders of each of the Data Science challenges
 - Folders for each of the Coding Club tutorials
