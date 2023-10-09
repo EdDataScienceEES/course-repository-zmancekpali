@@ -1,4 +1,4 @@
-#Course Repository 2023 - Zoja Manček Páli
+# Course Repository 2023 - Zoja Manček Páli
 Data Science in Ecology and Environmental Science Course
 
 ## Course Repository Challenge Instructions - GitHub and version control
