@@ -4,8 +4,6 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#Data science - Week 2 (28.9.2023)
-
 #Data visualization and manipulation ----
 #packages
 library(tidyverse) #includes ggplot and dplyr 

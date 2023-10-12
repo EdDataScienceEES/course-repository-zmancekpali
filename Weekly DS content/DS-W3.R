@@ -4,7 +4,6 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#DS-W3
 #for Github - first commit, then pull, then push. 
 
 #Coding etiquette
