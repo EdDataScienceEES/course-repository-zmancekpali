@@ -84,4 +84,3 @@ for(i in list){
 #Markdown ----
 #File -> New file -> Markdown file (html)
 #Look into how the graphs appear in Markdown - can/t figure it out 
-

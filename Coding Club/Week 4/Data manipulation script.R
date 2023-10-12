@@ -141,8 +141,11 @@ boxplot(plume.m ~ spice, data = shortsnout,
 
 
 
-#Efficient data manipulation (https://ourcodingclub.github.io/tutorials/data-manip-efficient/) ----
-#Grouping, summarising, tallying, filtering via splyr: 
+
+
+#Efficient data manipulation (https://ourcodingclub.github.io/tutorials/data-manip-efficient/)
+#Dplyr and tidyr----
+#Grouping, summarising, tallying, filtering via dplyr:
 trees.subset <- trees %>%
                 filter(CommonName %in% c('Common Ash', 'Rowan', 'Scots Pine')) %>%
                 group_by(CommonName, AgeGroup) %>%
