@@ -1,6 +1,9 @@
 # Course Repository 2023 - Zoja Manček Páli
 Data Science in Ecology and Environmental Science Course
 
+## Join me in listening while you read through the repo:
+![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212&interchange=false)
+
 ## Coding etiquette for this repository:
 The following rules should be upheld at all times when coding or working in this repo:
 1. Informative comments are included throughout the code, using the hashtag (#) symbol. There are no spaces before the hashtags. 
@@ -8,9 +11,6 @@ The following rules should be upheld at all times when coding or working in this
 3. The work is broken down into sections (by adding ---- at the end of each section title).
 4. All objects are given informative names (object names do not include capital leters and are separated by _ if necessary)
 5. Keep your code to under 100 characters in length per line (comments can extend past that if necessary)
-
-## Join me in listening while you read through the repo:
-![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212&interchange=false)
 
 ## What to include:
 - Course readings - Up to you to decide how you'll organise those.
@@ -34,3 +34,5 @@ The following rules should be upheld at all times when coding or working in this
 - A doc folder
 - An accidental art folder
 - Workflow diagrams
+
+  
