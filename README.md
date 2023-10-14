@@ -1,10 +1,16 @@
 # Course Repository 2023 - Zoja Manček Páli
 Data Science in Ecology and Environmental Science Course
 
-## Course Repository Challenge Instructions - GitHub and version control
+## Coding etiquette for this repository:
+The following rules should be upheld at all times when coding or working in this repo:
+1. Informative comments are included throughout the code, using the hashtag (#) symbol. There are no spaces before the hashtags. 
+2. The code is spaced out to make it easier to read.
+3. The work is broken down into sections (by adding ---- at the end of each section title).
+4. All objects are given informative names (object names do not include capital leters and are separated by _ if necessary)
+5. Keep your code to under 100 characters in length per line (comments can extend past that if necessary)
 
-Challenge start time: Thurs 5 Oct 2023
-Challenge end time: 12 noon Fri 1 Dec 2023
+## Join me in listening while you read through the repo:
+![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212&interchange=false)
 
 ## What to include:
 - Course readings - Up to you to decide how you'll organise those.
@@ -28,12 +34,3 @@ Challenge end time: 12 noon Fri 1 Dec 2023
 - A doc folder
 - An accidental art folder
 - Workflow diagrams
-
-Happy coding and version-controlling!
-
-## Useful links:
-Coding Club tutorial on GitHub: https://ourcodingclub.github.io/tutorials/git/
-Coding Club tutorial on Coding Etiquette: https://ourcodingclub.github.io/tutorials/etiquette/
-Course website: https://datascienceees.github.io
-For more ideas: https://eddatascienceees.github.io/tutorial-assignment-beverlytan/
-More on GitHub: https://ourcodingclub.github.io/tutorials/git-for-labs/
