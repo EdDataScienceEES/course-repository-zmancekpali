@@ -10,7 +10,7 @@ The following rules should be upheld at all times when coding or working in this
 5. Keep your code to under 100 characters in length per line (comments can extend past that if necessary)
 
 ## Join me in listening while you read through the repo:
-[![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false)]
+![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=false)
 
 ## What to include:
 - Course readings - Up to you to decide how you'll organise those.
