@@ -1,11 +1,6 @@
 # Course Repository 2023 - Zoja Manček Páli
 Data Science in Ecology and Environmental Science Course
 
-## Course Repository Challenge Instructions - GitHub and version control
-
-Challenge start time: Thurs 5 Oct 2023
-Challenge end time: 12 noon Fri 1 Dec 2023
-
 ## Coding etiquette for this repository:
 The following rules should be upheld at all times when coding or working in this repo:
 1. Informative comments are included throughout the code, using the hashtag (#) symbol. There are no spaces before the hashtags. 
@@ -36,12 +31,3 @@ The following rules should be upheld at all times when coding or working in this
 - A doc folder
 - An accidental art folder
 - Workflow diagrams
-
-Happy coding and version-controlling!
-
-## Useful links:
-Coding Club tutorial on GitHub: https://ourcodingclub.github.io/tutorials/git/
-Coding Club tutorial on Coding Etiquette: https://ourcodingclub.github.io/tutorials/etiquette/
-Course website: https://datascienceees.github.io
-For more ideas: https://eddatascienceees.github.io/tutorial-assignment-beverlytan/
-More on GitHub: https://ourcodingclub.github.io/tutorials/git-for-labs/
