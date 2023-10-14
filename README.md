@@ -36,6 +36,6 @@ The following rules should be upheld at all times when coding or working in this
 - Workflow diagrams
 
 For maximum enjoyment (i.e. minimum pain), imagine you are here while reading through:
-file:///Users/zojamancekpali/DS%20-%20Personal%20repo%20-%20Zoja/IMG_4765%20copy.JPG
+![](DS - Personal Repo/IMG_4765 copy.JPG)
 
 
