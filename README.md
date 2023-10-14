@@ -35,9 +35,4 @@ The following rules should be upheld at all times when coding or working in this
 - An accidental art folder
 - Workflow diagrams
 
-For maximum enjoyment (i.e. minimum pain), imagine you are here while reading through:
-(https://github.com/EdDataScienceEES/course-repository-zmancekpali/blob/master/IMG_4765%20copy.JPG)https://github.com/EdDataScienceEES/course-repository-zmancekpali/blob/master/IMG_4765%20copy.JPG)
-
-course-repository-zmancekpali
-
 
