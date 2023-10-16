@@ -3,7 +3,7 @@ Data Science in Ecology and Environmental Science Course
 
 ## Join me in listening while you read through the repo:
 Please refresh routinely (if on computer) for the most efficient way to keep up with the music shuffling.  
-![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212&interchange=false)
+![spotify-github-profile](https://spotify-github-profile.vercel.app/api/view?uid=09qe196vdk4hlszktredqnxj5&cover_image=true&theme=natemoo-re&show_offline=false&background_color=121212&interchange=false) 
 
 ## Coding etiquette for this repository:
 The following rules should be upheld at all times when coding or working in this repo:
