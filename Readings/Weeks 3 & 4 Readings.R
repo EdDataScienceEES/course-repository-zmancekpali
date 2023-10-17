@@ -1,6 +1,6 @@
 ##%#########################################################################%##
 #                                                                             #
-#                          Data science W3 (5.10.2023)                        #
+#                          Data science W3 & 4 (5.10.2023)                    #
 #                                  Readings                                   #
 #                                                                             #
 ##%#########################################################################%##
@@ -75,4 +75,36 @@ select(flights, contains("TIME")) #selects for columns with 'time' regardless of
 select(flights, matches("TIME", ignore.case = FALSE)) #takes case into account
 
 #Mutate() ----
+flights_sml <- select(flights, 
+                      year:day, 
+                      ends_with("delay"), 
+                      distance, 
+                      air_time)
+mutate(flights_sml,
+       gain = dep_delay - arr_delay,
+       speed = distance / air_time * 60,
+       gains_per_hous = gain / hours) #creates these new columns into the flights_sml data set
+
+transmute(flights,
+          gain = dep_delay - arr_delay,
+          hours = air_time / 60,
+          gain_per_hour = gain / hours) #this does the same as the above except it only shows these new colums
+
+
+
+
+
+
+
+#Summarise() ----
+summarise(flights, delay = mean(dep_delay, na.rm = TRUE)) #gives the mean delay value
+by_day <- group_by(flights, year, month, day) #group the flights by year, month, and day
+summarise(by_day, delay = mean(dep_delay, na.rm = TRUE)) #give them mean for each year, month, and day
+
+by_dest <- group_by(flights, dest) #group by destination
+delay <- summarise(by_dest,
+                   count = n(), #count the number of flights to that destination
+                   dist = mean(distance, na.rm = TRUE), #give the mean distance 
+                   delay = mean(arr_delay, na.rm = TRUE)) #give the mean arrival delay
+delay <- filter(delay, count > 20, dest != "HNL") #filter out flights that occur more than >20 but not to HNL
 
