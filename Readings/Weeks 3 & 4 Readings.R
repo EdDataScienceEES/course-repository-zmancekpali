@@ -5,7 +5,7 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#R for Data Science Chapter 5 Data transformation (http://r4ds.had.co.nz/transform.html)
+#R for Data Science Chapter 5 Data Transformation (http://r4ds.had.co.nz/transform.html)
 #Libraries
 library(nycflights13)
 library(tidyverse)
@@ -108,3 +108,119 @@ delay <- summarise(by_dest,
                    delay = mean(arr_delay, na.rm = TRUE)) #give the mean arrival delay
 delay <- filter(delay, count > 20, dest != "HNL") #filter out flights that occur more than >20 but not to HNL
 
+#Useful summarise values
+flights_summarised <- summarise(flights,
+          mean_delay = mean(dep_delay, na.rm = TRUE), #mean
+          sd_delay = sd(dep_delay, na.rm = TRUE), #standard deviation
+          min_delay = min(dep_delay, na.rm = TRUE), #minimum
+          max_delay = max(dep_delay, na.rm = TRUE), #maximum
+          carriers = n_distinct(carrier), #gives unique values
+          first = first(dep_delay), #first non-NA value
+          last = last(dep_delay)) #last value
+ 
+#Piping ----
+not_cancelled <- flights %>% 
+  filter(!is.na(dep_delay), !is.na(arr_delay))
+
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(mean = mean(dep_delay))
+
+delays <- not_cancelled %>% 
+  group_by(tailnum) %>% 
+  summarise(
+    delay = mean(arr_delay, na.rm = TRUE),
+    n = n())
+
+ggplot(data = delays, mapping = aes(x = n, y = delay)) + 
+  geom_point(alpha = 1/10)  #flights vs average delay
+
+not_cancelled %>% 
+  group_by(year, month, day) %>% 
+  summarise(n_early = sum(dep_time < 500)) #how many flights left before 5am
+
+daily <- group_by(flights, year, month, day) #each new grouping narrows down the dataset further
+(per_day   <- summarise(daily, flights = n()))
+(per_month <- summarise(per_day, flights = sum(flights)))
+(per_year  <- summarise(per_month, flights = sum(flights)))
+
+daily %>% 
+  ungroup() %>%           
+  summarise(flights = n())
+
+
+
+#R for Data Science Chapters 9 to 16 Data Wrangling (https://r4ds.had.co.nz/wrangle-intro.html)
+#Libraries
+library(nycflights13)
+library(readr)
+library(readxl)
+library(tidyverse)
+
+#Data
+flights
+iris
+table1
+table2
+table3
+
+
+#Tibbles and tribbles ----
+#Tibbles only show the first 10 rows
+as_tibble(iris)
+
+tribble(
+  ~x, ~y, ~z,
+  #--|--|---
+  "a", 2, 3.6,
+  "b", 1, 8.5) #this lets you specify the columns
+
+tibble(
+  a = lubridate::now() + runif(1e3) * 86400, #today's date + a random number of seconds (between 0 and 86400)
+  b = lubridate::today() + runif(1e3) * 30, #today's date + a random number of days (between 0 and 30)
+  c = 1:1e3, #sequence of integers from 1 to 1000
+  d = runif(1e3), #generates 1000 random values between 0 and 1
+  e = sample(letters, 1e3, replace = TRUE)) #generates 1000 random letters (from a to z)
+
+nycflights13::flights %>% 
+  print(n = 10, width = Inf) #n = 10 and width = inf will show 10 rows for all the columns
+
+
+#Data import ----
+read.csv() #for csv files; base R
+read_csv() #from the readr package
+read.excel() #from the readxly package
+load() #for R data
+
+#Parse
+parse_number("$100")
+parse_number("20%")
+parse_number("It cost $123.45") #all three of these will return numbers
+
+parse_datetime("2010-10-01T2010")
+parse_datetime("20101010") #if no time is given, it will be at midnight
+parse_date("01/02/15", "%m/%d/%y") #month, day, year
+parse_date("01/02/15", "%d/%m/%y") #day, month, year
+parse_date("01/02/15", "%y/%m/%d") #year, month, day
+parse_date("1 janvier 2015", "%d %B %Y", locale = locale("fr")) #gives date from the french text
+
+fruit <- c("apple", "banana")
+parse_factor(c("apple", "banana", "banana"), levels = fruit) #makes the apple and banana as factors
+
+x1 <- "El Ni\xf1o was particularly bad this year"
+x2 <- "\x82\xb1\x82\xf1\x82\xc9\x82\xbf\x82\xcd"
+parse_character(x1, locale = locale(encoding = "Latin1")) #writes out the characters in Latin alphabet
+parse_character(x2, locale = locale(encoding = "Shift-JIS")) #writes out the text in Japanese alphabet
+
+guess_parser("2010-10-01") #date
+guess_parser("15:01") #time
+guess_parser(c("TRUE", "FALSE")) #logical
+guess_parser(c("1", "5", "9")) #double
+guess_parser(c("12,352,561")) #number
+str(parse_guess("2010-10-10")) #date + format: 2010 - 10 - 10
+
+#Tidying data ----
+#Variables are columns, observations are columns, variables is each row:column 
+
+table1 %>% 
+  mutate(rate = cases / population * 10000) #calculates rate per 10,000 people

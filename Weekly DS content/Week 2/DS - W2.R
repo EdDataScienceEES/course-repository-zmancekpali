@@ -6,16 +6,17 @@
 
 #Data visualization and manipulation ----
 #packages
-library(tidyverse) #includes ggplot and dplyr 
-library(ggpubr)
 library(cowplot)
-library(magick) 
+library(ggpubr)
+library(grid)
 library(jpeg) 
+library(magick) 
 library(rmarkdown) 
+library(tidyverse) #includes ggplot and dplyr 
 
 #data
-nobel <- read.csv("nobel_prize_data.csv")
-path <- "/Users/zojamancekpali/Desktop/R directory/elmo.jpeg" #elmo path
+nobel <- read.csv("Weekly DS content/Week 2/nobel_prize_data.csv")
+path <- "Weekly DS content/Week 2/elmo.jpeg" #elmo path
 elmo = image_read(path) #R reads elmo
 
 
@@ -45,8 +46,7 @@ boxplot(nobel_prizes ~ continent, data = nobel)
 plot(nobel_prizes ~ pop_clean, data = nobel)
 
 #pretty graph w elmo
-grid.raster(elmo)
-p <- ggplot(nobel, aes(x=continent, y = log(per_capita), fill = continent)) +
+(p <- ggplot(nobel, aes(x=continent, y = log(per_capita), fill = continent)) +
   geom_boxplot() +
   scale_y_continuous(breaks = log(c(1,5,10,20)), #change the ticks on the y-axis
                      labels = c(1,5,10,20)) + #labels the y-axis
@@ -56,10 +56,10 @@ p <- ggplot(nobel, aes(x=continent, y = log(per_capita), fill = continent)) +
   annotate("text", x = 3, y = log(26), parse = TRUE,
            label = expression("WINNERS" ~ "!!"), color = "red") +
   annotate("text", x = 1, y = log(1), parse = TRUE,
-           label = "LOSERS", color = "red")
+           label = "LOSERS", color = "red"))
 grid.raster(elmo, just = "top", gp = gpar(alpha = 0.5)) #this adds the elmo on top of the image
 
-ggsave("plot2 - Helen.png", p, units = "cm", width = 20, height = 15) #saves the plot at set dimensions to your WD
+ggsave("plot2 - Helen.png", p, path = "Weekly DS content/Week 2", units = "cm", width = 20, height = 15) #saves the plot at set dimensions to your WD
 
 
 #Functions----
