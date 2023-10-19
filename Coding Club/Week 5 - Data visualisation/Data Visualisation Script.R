@@ -411,14 +411,6 @@ north_america <- north_america[!(north_america$subregion %in% "Hawaii"),]
                alpha = 0.8, size = 4, colour = "grey30",
                shape = 21))  
 
-(lter_map <- ggplot(data = north_america) +
-  geom_map(map = north_america,
-           aes(long, lat, map_id = region), 
-           color = "gray80", fill = "gray80", size = 0.3) +
-  coord_cartesian(xlim = c(-175, -50), ylim = c(25, 80), expand = FALSE) +
-  geom_point(aes(x = long, y = lat, fill = ele),
-             alpha = 0.8, size = 4, colour = "grey30", shape = 21))
-
        
 (lter_map4 <- ggplot() +
     geom_map(map = north_america, data = north_america,
@@ -442,7 +434,7 @@ north_america <- north_america[!(north_america$subregion %in% "Hawaii"),]
              aes(x = long, y = lat, fill = ele),
              alpha = 0.8, size = 4, colour = "grey30",
              shape = 21) +
-  theme_map() +
+  theme_minimal() +
   theme(legend.position = "bottom") +
   geom_label_repel(data = lter,
                              aes(x = long, y = lat,
@@ -458,7 +450,7 @@ north_america <- north_america[!(north_america$subregion %in% "Hawaii"),]
                aes(x = long, y = lat, fill = ele),
                alpha = 0.8, size = 4, colour = "grey30",
                shape = 21) +
-    theme_map() +
+    theme_minimal() +
     theme(legend.position = "bottom") +
     geom_label_repel(data = subset(lter, ele > 2000),
                      aes(x = long, y = lat,
@@ -474,7 +466,7 @@ north_america <- north_america[!(north_america$subregion %in% "Hawaii"),]
                aes(x = long, y = lat, fill = ele),
                alpha = 0.8, size = 4, colour = "grey30",
                shape = 21) +
-    theme_map() +
+    theme_minimal() +
     theme(legend.position = "bottom") +
     geom_label_repel(data = subset(lter, ele > 2000),
                      aes(x = long, y = lat,
@@ -574,5 +566,8 @@ d1 <- rbind(c(0, 0), d1)
                arrow = arrow(length = unit(0.07, "inch")), size = 0.7,
                color = "grey30", curvature = 0.3) +
     labs(x = "\nObservation hits", y = "Count\n"))
+
+
+
 
 
