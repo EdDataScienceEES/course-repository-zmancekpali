@@ -158,12 +158,13 @@ library(readxl)
 library(tidyverse)
 
 #Data
+airlines
 flights
 iris
 table1
 table2
 table3
-
+table4
 
 #Tibbles and tribbles ----
 #Tibbles only show the first 10 rows
@@ -224,3 +225,45 @@ str(parse_guess("2010-10-10")) #date + format: 2010 - 10 - 10
 
 table1 %>% 
   mutate(rate = cases / population * 10000) #calculates rate per 10,000 people
+
+table1 %>% 
+  count(year, wt = cases) #cases per year
+
+tidy4a <- table4a %>% pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "cases") #change to longer 
+tidy4b <- table4b %>% pivot_longer(c(`1999`, `2000`), names_to = "year", values_to = "population") #this type is more useful for what I will do
+left_join(tidy4a, tidy4b) #joins them both
+
+table2 %>% pivot_wider(names_from = type, values_from = count) #changes to a wider dataset
+
+table3 %>% separate(rate, into = c("cases", "population")) #separate the rate into cases and total population
+
+table3 %>% separate(year, into = c("century", "year"), sep = 2) #separate two digits into each column
+
+table5 %>% unite(new, century, year) #joins century and year with a _ as a separator
+table5 %>% unite(new, century, year, sep = "") #same as above but no _
+
+#Missing values
+stocks <- tibble(
+  year   = c(2015, 2015, 2015, 2015, 2016, 2016, 2016),
+  qtr    = c(   1,    2,    3,    4,    2,    3,    4),
+  return = c(1.88, 0.59, 0.35,   NA, 0.92, 0.17, 2.66))
+
+stocks %>% pivot_wider(names_from = year, values_from = return)
+stocks %>% pivot_wider(names_from = year, values_from = return) %>% 
+           pivot_longer(cols = c(`2015`, `2016`), 
+                        names_to = "year", 
+                        values_to = "return", 
+                        values_drop_na = TRUE) #excludes the NAs
+stocks %>% complete(year, qtr)
+
+treatment <- tribble(
+  ~ person,           ~ treatment, ~response,
+  "Derrick Whitmore", 1,           7,
+  NA,                 2,           10,
+  NA,                 3,           9,
+  "Katherine Burke",  1,           4)
+treatment %>% fill(person) #this will replace the NAs with the most recent non-NA
+
+#
+#
+#
