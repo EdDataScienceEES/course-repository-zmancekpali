@@ -28,8 +28,11 @@
 library(tidyverse)
 library(scales)
 
+#WD
+setwd("Weekly DS content/Week 5")
+
 # Load Living Planet Data
-LPI_data <- read.csv("weekly_materials/week_05/data/LPI_data.csv")
+LPI_data <- read.csv("LPI_data.csv")
 
 # Reshape data into long form
 LPI_long <- gather(data = LPI_data, key = "year", value = "pop", 25:69) %>%
@@ -61,25 +64,45 @@ LPI.models <- LPI_long %>%
 
 ### Challenge part 1: Adapt that code to make that first figure more beautiful and save!
 
-LPI_Bar <- LPI.models %>%
+
+(LPI_Bar <- LPI.models %>%
   group_by(biome) %>%
   summarise(count = length(unique(id))) %>%
-  arrange(desc(count))
+  arrange(desc(count)))
 
-LPI_Bargraph <- ggplot(data=LPI_Bar, aes(x=biome, y=count)) +
-    geom_bar(stat="identity")
 
-# ggsave(LPI_Bargraph, filename = "weekly_materials/week_05/YouAndYourPartnersNames_UglyOrPretty.pdf", width = 8, height = 5)
+biome_colors <- rep("#615523", length(unique(LPI_Bar$biome)))
 
-### Challenge part 2: Answer the question with your own data wrangling and a beautiful graph and save!
+(LPI_Bargraph <- ggplot(data = LPI_Bar, aes(x = biome, y = count, fill = biome)) +
+    geom_bar(stat = "identity") +
+    scale_fill_manual(values = biome_colors) +  # Use a discrete color scale
+    theme(plot.background = element_rect(fill = "limegreen"),
+          plot.title = element_text(size = 20, color = "orange", face = "bold.italic"),
+          plot.subtitle = element_text(size = 10, color = "forestgreen", face = "bold"),
+          plot.caption = element_text(size = 15, color = "red", angle = 35),
+          panel.background = element_rect(fill = 'darkred', colour = 'lightblue', size = 4),
+          panel.border = element_rect(fill = NA, color = "green", size = 2),
+          panel.grid.major.x = element_line(color = "yellow", linetype = 2),
+          panel.grid.minor.x = element_line(color = "orange", linetype = 3),
+          panel.grid.minor.y = element_blank(),
+          
+          axis.title.y = element_text(face = "bold.italic", color = "orange"),
+          axis.title.x = element_text(face = "bold.italic", color = "orange"),
+        
+          strip.background = element_rect(fill = "#FE1"),
+          strip.text.y = element_text(color = "white"),
+          strip.placement = "outside",
+          
+          legend.background = element_rect(fill = "orangered4"), # generally will want to match w plot background
+          legend.key = element_rect(fill = "purple"),
+          legend.direction = "horizontal",
+          legend.position = "bottom",
+          legend.justification = "left",
+          legend.title = element_text(family = "serif", color = "red"),
+          legend.text = element_text(family = "mono", face = "bold.italic", color = "blue")) +
+    labs(title = "Try to find the biome",
+         subtitle = "Good luck lol",
+         caption = "don't cry"))
 
-# How are populations changing across the six best monitored biomes?
+ggsave(LPI_Bargraph, file = "hanan_hannah_zoja_ugly_graph.jpg", units = "cm", width = 50, height = 30)
 
-#Hint, we've got the number of biomes from the above question, just need to filter our model data to just these!
-
-# HINT: You can use facet_wrap() or facet_grid() from the ggplot2 package
-# to quickly create a graph with multiple panels
-
-# EITHER Make your figure as beautiful as it can be or as ugly as it can be and save that file
-
-# The group with the prettiest and ugliest figures win the respective "glory"
