@@ -159,12 +159,15 @@ library(tidyverse)
 
 #Data
 airlines
+airports
 flights
 iris
+planes
 table1
 table2
 table3
 table4
+weather
 
 #Tibbles and tribbles ----
 #Tibbles only show the first 10 rows
@@ -264,6 +267,44 @@ treatment <- tribble(
   "Katherine Burke",  1,           4)
 treatment %>% fill(person) #this will replace the NAs with the most recent non-NA
 
-#
-#
-#
+#I used this for the coding club week 5 to find what species are the same in both datasets:
+common_countries <- intersect(unique(ruff$Country.list), unique(razorbill$Country.list))
+#Obviously, adjust the data and column names as necessary
+
+#Factors ----
+gss_cat
+gss_cat %>%
+  count(race)
+
+relig_summary <- gss_cat %>%
+  group_by(relig) %>%
+  summarise(
+    age = mean(age, na.rm = TRUE),
+    tvhours = mean(tvhours, na.rm = TRUE),
+    n = n())
+
+ggplot(relig_summary, aes(tvhours, relig)) + 
+  geom_point()
+
+ggplot(relig_summary, aes(tvhours, fct_reorder(relig, tvhours))) +
+  geom_point() #reordered factors
+
+relig_summary %>%
+  mutate(relig = fct_reorder(relig, tvhours)) %>%
+  ggplot(aes(tvhours, relig)) +
+  geom_point() #same as above but recodes within the data sets (mutate()) - useful if you have more variables
+
+by_age <- gss_cat %>%
+  filter(!is.na(age)) %>%
+  count(age, marital) %>%
+  group_by(age) %>%
+  mutate(prop = n / sum(n))
+
+ggplot(by_age, aes(age, prop, colour = marital)) +
+  geom_line(na.rm = TRUE)
+
+ggplot(by_age, aes(age, prop, colour = fct_reorder2(marital, age, prop))) +
+  geom_line() +
+  labs(colour = "marital")
+
+#Dates and times ----
