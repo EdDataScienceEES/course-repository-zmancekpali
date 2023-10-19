@@ -1,1 +1,0 @@
-This folder contains the three plots from the Challenge 1 code.
