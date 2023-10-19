@@ -152,6 +152,7 @@ daily %>%
 
 #R for Data Science Chapters 9 to 16 Data Wrangling (https://r4ds.had.co.nz/wrangle-intro.html)
 #Libraries
+library(lubridate)
 library(nycflights13)
 library(readr)
 library(readxl)
@@ -296,3 +297,33 @@ ggplot(by_age, aes(age, prop, colour = fct_reorder2(marital, age, prop))) +
   labs(colour = "marital")
 
 #Dates and times ----
+today() #gives today's date
+now() #gives the date and time currently
+
+ymd("2017-01-31")
+mdy("January 31st, 2017")
+dmy("31-Jan-2017")
+ymd(20170131) #all of these will transform these strings or numbers into the date (y,m,d format)
+
+ymd_hms("2017-01-31 20:11:59") #gives date and time (y,m,d and h,m,s format)
+mdy_hm("01/31/2017 08:01") #gives date and time (y,m,d and h,m, format)
+
+flights %>% select(year, month, day, hour, minute) %>% 
+  mutate(departure = make_datetime(year, month, day, hour, minute))
+
+make_datetime_100 <- function(year, month, day, time) {
+  make_datetime(year, month, day, time %/% 100, time %% 100)
+} #function to divide the time values by 100
+
+flights_dt <- flights %>% 
+  filter(!is.na(dep_time), !is.na(arr_time)) %>% 
+  mutate(
+    dep_time = make_datetime_100(year, month, day, dep_time),
+    arr_time = make_datetime_100(year, month, day, arr_time),
+    sched_dep_time = make_datetime_100(year, month, day, sched_dep_time),
+    sched_arr_time = make_datetime_100(year, month, day, sched_arr_time)
+  ) %>% 
+  select(origin, dest, ends_with("delay"), ends_with("time"))
+
+h_age <- today() - ymd(19791014) #so cool wow
+as.duration(h_age)
