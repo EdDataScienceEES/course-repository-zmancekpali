@@ -157,18 +157,6 @@ library(readr)
 library(readxl)
 library(tidyverse)
 
-#Data
-airlines
-airports
-flights
-iris
-planes
-table1
-table2
-table3
-table4
-weather
-
 #Tibbles and tribbles ----
 #Tibbles only show the first 10 rows
 as_tibble(iris)

@@ -397,28 +397,41 @@ north_america <- north_america[!(north_america$subregion %in% "Hawaii"),]
                alpha = 0.8, size = 4, colour = "grey30",
                shape = 21)) #bequtified site location points (apparently)
 
-(lter_map3 <- ggplot() +
-    geom_map(map = north_america, data = north_america,
+(lter_map3 <- ggplot(data = north_america) +
+    geom_map(map = north_america, 
              aes(long, lat, map_id = region), 
              color = "gray80", fill = "gray80", size = 0.3) +
+    # you can change the projection here
+    # coord_proj("+proj=wintri") +
+    # the wintri one above is good for the whole world, the one below for just North America
     coord_proj(paste0("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96",
                       " +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs")) +
     geom_point(data = lter, 
                aes(x = long, y = lat, fill = ele),
                alpha = 0.8, size = 4, colour = "grey30",
-               shape = 21))
+               shape = 21))  
 
-(lter_map4 <- ggplot() +
-  geom_map(map = north_america, data = north_america,
+(lter_map <- ggplot(data = north_america) +
+  geom_map(map = north_america,
            aes(long, lat, map_id = region), 
            color = "gray80", fill = "gray80", size = 0.3) +
-  coord_cartesian(xlim = c(-175, -50), ylim = c(25, 80)) + #cartesian coordinates
-  geom_point(data = lter, 
-             aes(x = long, y = lat, fill = ele),
-             alpha = 0.8, size = 4, colour = "grey30",
-             shape = 21) +
-  ggplot_theme() +
-  theme(legend.position = "bottom"))
+  coord_cartesian(xlim = c(-175, -50), ylim = c(25, 80), expand = FALSE) +
+  geom_point(aes(x = long, y = lat, fill = ele),
+             alpha = 0.8, size = 4, colour = "grey30", shape = 21))
+
+       
+(lter_map4 <- ggplot() +
+    geom_map(map = north_america, data = north_america,
+             aes(long, lat, map_id = region), 
+             color = "gray80", fill = "gray80", size = 0.3) +
+    coord_proj(paste0("+proj=aea +lat_1=29.5 +lat_2=45.5 +lat_0=37.5 +lon_0=-96",
+                      " +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"),
+               # zooming in by setting specific coordinates
+               ylim = c(25, 80), xlim = c(-175, -50)) +
+    geom_point(data = lter, 
+               aes(x = long, y = lat, fill = ele),
+               alpha = 0.8, size = 4, colour = "grey30",
+               shape = 21))
 
 (lter_map5 <- ggplot() +
   geom_map(map = north_america, data = north_america,
