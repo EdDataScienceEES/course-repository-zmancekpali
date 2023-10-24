@@ -6,7 +6,9 @@
 ##%#########################################################################%##
 
 #WD
-setwd("Dissertation")
+setwd("~/") #erases previously set WDs
+setwd("Dissertation") #sets a new one
+getwd() #check that it's worked
 
 
 #Libraries
@@ -76,7 +78,8 @@ bartlett.test(transformed_lma ~ type, data = nns) #heteroscedascity
           legend.position = "none"))
 
 ggsave("lma_boxplot.jpg", lma_boxplot, units = "cm", width = 20, height = 15) 
-ggsave("C:/YourDirectory/lma_boxplot.jpg", lma_boxplot, units = "cm", width = 20, height = 15)
+
+ggsave("C:/Dissertation/lma_boxplot.jpg", lma_boxplot, units = "cm", width = 20, height = 15)
 
 #Dunn post-hoc test
 dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay

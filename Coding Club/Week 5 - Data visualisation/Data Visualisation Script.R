@@ -17,7 +17,7 @@ library(tidyr)
 library(viridis)
 
 #Working directory
-setwd("Coding Club/Week 5 - Data Visualisation")
+setwd("/Users/zojamancekpali/DS - Personal repo - Zoja/Coding Club/Week 5 - Data Visualisation")
 
 #Data
 LPI <- read.csv("LPIdata_CC.csv")
