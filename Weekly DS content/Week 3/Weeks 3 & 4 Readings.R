@@ -5,11 +5,6 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#WD
-setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Weekly DS content/Week 3") #sets a new one
-getwd() #check that it's worked
-
 #R for Data Science Chapter 5 Data Transformation (http://r4ds.had.co.nz/transform.html)
 #Libraries
 library(nycflights13)
