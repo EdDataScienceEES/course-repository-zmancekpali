@@ -8,6 +8,7 @@
 #WD
 setwd("Dissertation")
 
+
 #Libraries
 library(cowplot)
 library(dunn.test)
@@ -74,7 +75,7 @@ bartlett.test(transformed_lma ~ type, data = nns) #heteroscedascity
           plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
           legend.position = "none"))
 
-ggsave("lma_boxplot.jpg", lma_boxplot, path = "Plots", units = "cm", width = 20, height = 15) 
+ggsave("lma_boxplot.jpg", lma_boxplot, units = "cm", width = 20, height = 15) 
 
 #Dunn post-hoc test
 dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
