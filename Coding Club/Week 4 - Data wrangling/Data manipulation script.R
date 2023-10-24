@@ -9,8 +9,10 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 
-#Working directory
-setwd("/Users/zojamancekpali/DS - Personal repo - Zoja/Coding Club 1/Week 4")
+#WD
+setwd("~/") #erases previously set WDs
+setwd("DS - Personal repo - Zoja/Coding Club/Week 4 - Data Wrangling") #sets a new one
+getwd() #check that it's worked
 
 #Data
 elongation <- read.csv("EmpetrumElongation.csv", header = TRUE) 

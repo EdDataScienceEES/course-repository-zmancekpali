@@ -9,7 +9,9 @@ library(tidyverse)
 library(scales)
 
 #WD
-setwd("Weekly DS content/Week 5")
+setwd("~/") #erases previously set WDs
+setwd("DS - Personal repo - Zoja/Weekly DS content/Week 5") #sets a new one
+getwd() #check that it's worked
 
 #Data
 LPI_data <- read.csv("LPI_data.csv")

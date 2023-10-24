@@ -16,6 +16,12 @@
 #Libraries:
 library(tidyverse)
 
+#WD
+setwd("~/") #erases previously set WDs
+setwd("DS - Personal repo - Zoja/Weekly DS content/Week 4") #sets a new one
+getwd() #check that it's worked
+
+
 #Data:
 load("/Users/zojamancekpali/DS - Personal repo - Zoja/Weekly DS Content/Week 4/LPI_species.Rdata")
 

@@ -4,6 +4,12 @@
 #                                                                             #
 ##%#########################################################################%##
 
+#WD
+setwd("~/") #erases previously set WDs
+setwd("DS - Personal repo - Zoja/Weekly DS content/Week 2") #sets a new one
+getwd() #check that it's worked
+
+
 #Data visualization and manipulation ----
 #packages
 library(cowplot)
@@ -15,8 +21,8 @@ library(rmarkdown)
 library(tidyverse) #includes ggplot and dplyr 
 
 #data
-nobel <- read.csv("Weekly DS content/Week 2/nobel_prize_data.csv")
-path <- "Weekly DS content/Week 2/elmo.jpeg" #elmo path
+nobel <- read.csv("nobel_prize_data.csv")
+path <- "elmo.jpeg" #elmo path
 elmo = image_read(path) #R reads elmo
 
 
@@ -59,7 +65,7 @@ plot(nobel_prizes ~ pop_clean, data = nobel)
            label = "LOSERS", color = "red"))
 grid.raster(elmo, just = "top", gp = gpar(alpha = 0.5)) #this adds the elmo on top of the image
 
-ggsave("plot2 - Helen.png", p, path = "Weekly DS content/Week 2", units = "cm", width = 20, height = 15) #saves the plot at set dimensions to your WD
+ggsave("plot2 - Helen.png", p, units = "cm", width = 20, height = 15) #saves the plot at set dimensions to your WD
 
 
 #Functions----
