@@ -15,6 +15,7 @@ library(e1071)
 library(ggfortify)
 library(ggpubr)
 library(gridExtra)
+library(lme4)
 library(MASS)
 library(multcomp)
 library(tidyverse)
@@ -31,7 +32,7 @@ nns <- trees %>%
   arrange(type = factor(type, levels = c('Native', 'Naturalised', 'Invasive'))) %>%  #rearranges the categories in this order
   filter(A >= 0) #removed negative A values (they were dead leaves)
 
-traits.palette <- c("#698B69", "#EEC900", "#CD6090")    #defining 3 colours
+traits.palette <- c("#CD6090", "#698B69", "#EEC900")    #defining 3 colours
 
 
 #Exploration
@@ -313,12 +314,15 @@ nmds_result <- metaMDS(lma_matrix, distance = "bray") #why bray??
 plot(nmds_result)
 
 
+
+
+
+
 #mixed effect models?? ----
-library(lme4)
-model_lma <- lmer(lma ~ type + (1 | ever_dec), data = subset_trees)
-model_lma_1 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec), data = subset_trees) 
-model_lma_2 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec) + (1 | canopy_pos), data = subset_trees)
-model_lma_3 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec) + (1 | canopy_pos) + (1 | dbh), data = subset_trees)
+model_lma <- lmer(lma ~ type + (1 | ever_dec), data = nns)
+model_lma_1 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec), data = nns) 
+model_lma_2 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec) + (1 | canopy_pos), data = nns)
+model_lma_3 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec) + (1 | canopy_pos) + (1 | dbh), data = nns)
 AIC(model_lma_1, model_lma_2, model_lma_3)
 #models 2 and 3 fall within 2 AIC scores; so virtually identical fit to the data
 #looks like adding DBH does not add anything to the data, so I will not use it
@@ -333,4 +337,4 @@ summary(glm(lma ~ type, data = subset_trees))
 
 
 #NMDS for LMA - in progress
-nmds_data <- data.frame(type = as.factor(swap$type), lma = swap$lma)
+
