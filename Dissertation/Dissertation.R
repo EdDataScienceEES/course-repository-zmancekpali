@@ -26,6 +26,19 @@ library(vegan)
 
 #Data
 trees <- read.csv("traits_analysis.csv")
+trees <- trees %>% 
+  mutate(canopy_pos = recode(canopy_pos, 
+                             "L" = "Lower",
+                             "U" = "Upper")) %>%  #recode canopy positions from abbreviations
+  mutate(code_two = recode(code_two,
+                           "CB" = "C. bullatus",
+                           "QC" = "Q. cerris",
+                           "QI" = "Q. ilex",
+                           "RPS" = "R. pseudoacacia semperflorens")) %>% #recode alien species names
+  filter(A >= 0) %>% 
+  arrange(code_two = factor(type, levels = c('Native', 'Naturalised', 'Invasive', 
+                                             'C. bullatus', 'Q. cerris', 'Q. ilex', 
+                                             'R. pseudoacacia semperflorens')))  #rearranges the categories in this order
 
 nns <- trees %>% 
   filter(type %in% c('Native', 'Naturalised', "Invasive")) %>% #excluding the alien group for initial analysis
@@ -36,13 +49,13 @@ nns <- trees %>%
   filter(A >= 0) #removed negative A values (they were dead leaves)
 
 traits.palette <- c("#CD6090", "#698B69", "#EEC900")    #defining 3 colours
-
+traits.palette2 <- c("#CD6090", "#698B69", "#EEC900", "#5EA8D9", "#245C82", "#4A3E87", "#5A5DC7")
 
 #Exploration
 head(nns)
 str(nns)
 
-#Step 1: see whether NN and I species differ in their traits + respective box plots
+#Step 1: see whether NN and I species differ in their traits + respective box plots + post-hoc tests if significant
 #LMA ----
 lma_mod <- lm(lma ~ type, data = nns)
 autoplot(lma_mod)
@@ -307,20 +320,57 @@ ggsave("dr_boxplot.jpg", dr_boxplot, path = "Plots", units = "cm", width = 20, h
 
 #No dunn since no significant effect?
 
-#NMDS??
-
-lma_matrix <- lma_matrix %>%
-  mutate(Invasive = ifelse(is.na(Invasive), mean(Invasive, na.rm = TRUE), Invasive),
-         Native = ifelse(is.na(Native), mean(Native, na.rm = TRUE), Native),
-         Naturalised = ifelse(is.na(Naturalised), mean(Naturalised, na.rm = TRUE), Naturalised))
-nmds_result <- metaMDS(lma_matrix, distance = "bray") #why bray??
-plot(nmds_result)
 
 
+#Step 2: compare alien species ----
+
+lma_mod2 <- lm(lma ~ code_two, data = trees)
+autoplot(lma_mod2)
+shapiro.test(resid(lma_mod2)) #residuals not distributed normally
+bartlett.test(lma ~ code_two, data = trees) #homoscedascity
+
+#Attempt mathematical transformation first to meet ANOVA assumptions:
+lma_boxcox2 <- boxcox(lma ~ 1, data = trees) #the λ is the highest point on the curve
+(lma_lambda2 <- lma_boxcox2$x[which.max(lma_boxcox2$y)]) #λ = -0.1818182
+trees <- trees %>% mutate(transformed_lma = (lma ^ (lma_lambda2 - 1)) / lma_lambda2) #Box-Cox transformation applied in a new column
+
+lma_mod_trans2 <- lm(transformed_lma ~ code_two, data = trees)
+autoplot(lma_mod_trans2)
+shapiro.test(resid(lma_mod_trans2)) #residuals not distributed normally
+bartlett.test(transformed_lma ~ code_two, data = trees) #homoscedascity
+
+#Transformation did not work, moving on to non-parametric alternative:
+(lma_kw2 <- kruskal.test(lma ~ code_two, data = trees)) #p-value = 3.977e-06; significant
+
+(lma_boxplot2 <- ggplot(trees, 
+                       aes(x = factor(code_two, levels = 
+                                        c('Native', 'Naturalised', 'Invasive', 
+                                          'C. bullatus', 'Q. cerris', "Q. ilex", 
+                                          'R. pseudoacacia semperflorens')), #reorders the types 
+                           y = lma, fill = code_two)) + 
+    geom_boxplot() + #creates the boxplot
+    stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
+    geom_jitter() + #adds the jitter
+    scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
+                                 "Naturalised" = "#EEC900", "C. bullatus" = "#5EA8D9",
+                                 "Q. cerris" = "#245C82", "Q. ilex" = "#4A3E87",
+                                 "R. pseudoacacia semperflorens" = "#5A5DC7")) + #colours each boxplot this particular colour
+    labs(x = "\n Invasion status", 
+         y = expression(atop("LMA (g/cm"^2*")"))) + 
+    theme_classic() + 
+    theme(axis.text = element_text(size = 10), 
+          axis.title = element_text(size = 11), 
+          plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
+          legend.position = "none"))
+
+ggsave("lma_boxplot2.jpg", lma_boxplot2, path = "Plots", units = "cm", width = 30, height = 15) 
+
+#Dunn post-hoc test
+dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
+#naturalised also differ significantly from natives
 
 
-
-
+#Step 2 - Mixed effect models ----
 #mixed effect models?? ----
 model_lma <- lmer(lma ~ type + (1 | ever_dec), data = nns)
 model_lma_1 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec), data = nns) 
@@ -339,5 +389,17 @@ model_chl_1 <- lmer(avg_chl ~ type + (1 | code) + (1 | age) +  (1 | ever_dec) + 
 summary(glm(lma ~ type, data = subset_trees))
 
 
-#NMDS for LMA - in progress
+
+#Step 3 - NMDS
+#NMDS- in progress ----
+#LMA
+lma <- nns %>% filter(type, lma)
+
+lma_matrix <- lma_matrix %>%
+  mutate(Invasive = ifelse(is.na(Invasive), mean(Invasive, na.rm = TRUE), Invasive),
+         Native = ifelse(is.na(Native), mean(Native, na.rm = TRUE), Native),
+         Naturalised = ifelse(is.na(Naturalised), mean(Naturalised, na.rm = TRUE), Naturalised))
+nmds_result <- metaMDS(lma_matrix, distance = "bray") #why bray??
+plot(nmds_result)
+
 
