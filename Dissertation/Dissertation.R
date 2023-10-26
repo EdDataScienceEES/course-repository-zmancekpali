@@ -93,7 +93,7 @@ bartlett.test(transformed_lma ~ type, data = nns) #heteroscedascity
 ggsave("lma_boxplot.jpg", lma_boxplot, path = "Plots", units = "cm", width = 20, height = 15) 
 
 #Dunn post-hoc test
-dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
+dunn_lma <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
 #naturalised also differ significantly from natives
 
 
@@ -226,7 +226,7 @@ e_mod <- lm(E ~ type, data = nns)
 autoplot(e_mod)
 shapiro.test(resid(e_mod)) #residuals distributed normally
 bartlett.test(E ~ type, data = nns) #homoscedascity
-anova(e_mod)
+anova(e_mod) #NS; p-value = 0.3313
 
 (e_boxplot <- ggplot(nns, 
                      aes(x = factor(type, levels = c('Native', 'Naturalised', 'Invasive')), #reorders the types 
@@ -323,11 +323,11 @@ ggsave("dr_boxplot.jpg", dr_boxplot, path = "Plots", units = "cm", width = 20, h
 
 
 #Step 2: compare alien species ----
-
+#LMA ----
 lma_mod2 <- lm(lma ~ code_two, data = trees)
 autoplot(lma_mod2)
 shapiro.test(resid(lma_mod2)) #residuals not distributed normally
-bartlett.test(lma ~ code_two, data = trees) #homoscedascity
+bartlett.test(lma ~ code_two, data = trees) #heteroscedascity
 
 #Attempt mathematical transformation first to meet ANOVA assumptions:
 lma_boxcox2 <- boxcox(lma ~ 1, data = trees) #the λ is the highest point on the curve
@@ -337,7 +337,7 @@ trees <- trees %>% mutate(transformed_lma = (lma ^ (lma_lambda2 - 1)) / lma_lamb
 lma_mod_trans2 <- lm(transformed_lma ~ code_two, data = trees)
 autoplot(lma_mod_trans2)
 shapiro.test(resid(lma_mod_trans2)) #residuals not distributed normally
-bartlett.test(transformed_lma ~ code_two, data = trees) #homoscedascity
+bartlett.test(transformed_lma ~ code_two, data = trees) #heteroscedascity
 
 #Transformation did not work, moving on to non-parametric alternative:
 (lma_kw2 <- kruskal.test(lma ~ code_two, data = trees)) #p-value = 3.977e-06; significant
@@ -363,14 +363,16 @@ bartlett.test(transformed_lma ~ code_two, data = trees) #homoscedascity
           plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
           legend.position = "none"))
 
-ggsave("lma_boxplot2.jpg", lma_boxplot2, path = "Plots", units = "cm", width = 30, height = 15) 
+ggsave("lma_boxplot2.jpg", lma_boxplot2, path = "Dissertation/Plots", units = "cm", width = 30, height = 15) 
 
 #Dunn post-hoc test
 dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
 #naturalised also differ significantly from natives
 
 
-#Step 2 - Mixed effect models ----
+
+
+#Step 3 - Mixed effect models ----
 #mixed effect models?? ----
 model_lma <- lmer(lma ~ type + (1 | ever_dec), data = nns)
 model_lma_1 <- lmer(lma ~ type + (1 | code) + (1 | age) +  (1 | ever_dec), data = nns) 
@@ -390,7 +392,7 @@ summary(glm(lma ~ type, data = subset_trees))
 
 
 
-#Step 3 - NMDS
+#Step 4 - NMDS
 #NMDS- in progress ----
 #LMA
 lma <- nns %>% filter(type, lma)
