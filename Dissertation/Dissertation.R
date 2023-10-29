@@ -334,13 +334,13 @@ lma_boxcox2 <- boxcox(lma ~ 1, data = trees) #the λ is the highest point on the
 (lma_lambda2 <- lma_boxcox2$x[which.max(lma_boxcox2$y)]) #λ = -0.1818182
 trees <- trees %>% mutate(transformed_lma = (lma ^ (lma_lambda2 - 1)) / lma_lambda2) #Box-Cox transformation applied in a new column
 
-lma_mod_trans2 <- lm(transformed_lma ~ code_two, data = trees)
+lma_mod_trans2 <- lm(transformed_lma ~ type, data = trees)
 autoplot(lma_mod_trans2)
 shapiro.test(resid(lma_mod_trans2)) #residuals not distributed normally
-bartlett.test(transformed_lma ~ code_two, data = trees) #heteroscedascity
+bartlett.test(transformed_lma ~ type, data = trees) #heteroscedascity
 
 #Transformation did not work, moving on to non-parametric alternative:
-(lma_kw2 <- kruskal.test(lma ~ code_two, data = trees)) #p-value = 3.977e-06; significant
+(lma_kw2 <- kruskal.test(lma ~ type, data = trees)) #p-value = 6.206e-07; significant
 
 (lma_boxplot2 <- ggplot(trees, 
                        aes(x = factor(code_two, levels = 
@@ -363,10 +363,10 @@ bartlett.test(transformed_lma ~ code_two, data = trees) #heteroscedascity
           plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
           legend.position = "none"))
 
-ggsave("lma_boxplot2.jpg", lma_boxplot2, path = "Dissertation/Plots", units = "cm", width = 30, height = 15) 
+ggsave("lma_boxplot2.jpg", lma_boxplot2, units = "cm", width = 30, height = 15) 
 
 #Dunn post-hoc test
-dunn_chl <- dunn.test(nns$lma, nns$type, method = "bonferroni") #invasives differ significantly from natives yay
+dunn_lma_2 <- dunn.test(nns$lma, nns$code_2, method = "bonferroni") #invasives differ significantly from natives yay
 #naturalised also differ significantly from natives
 
 
