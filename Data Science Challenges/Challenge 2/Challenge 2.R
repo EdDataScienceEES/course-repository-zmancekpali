@@ -30,23 +30,27 @@ capitals <- read.csv("us-state-capitals.csv") #data from https://github.com/jasp
 head(cars)
 str(cars)
 
+length(unique(new_cars$State)) #43 states total
+length(unique(new_cars$Make)) #37 makes of cars
+length(unique(new_cars$Electric.Vehicle.Type)) #2 types (BEV or PHEV)
+
 #Wrangling
 #Tidying the data ----
 new_cars <- cars %>% 
-  mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", "\\1,\\2", Vehicle.Location), # removes the POINT and () around the longitude and latitude
-         Vehicle.Location = ifelse(Vehicle.Location == "", NA, Vehicle.Location)) %>% # adds NA for missing location values
+  mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", "\\1,\\2", Vehicle.Location), #removes the POINT and () around the longitude and latitude
+         Vehicle.Location = ifelse(Vehicle.Location == "", NA, Vehicle.Location)) %>% # adds NAs for missing location values
   separate(Vehicle.Location, into = c("Longitude", "Latitude"), sep = ",") %>% # splits the values into latitude and longitude
-  filter(State != "BC" & State != "AP") %>% # removes the Non-US state rows 
+  filter(State != "BC" & State != "AP") %>% #remove the Non-US state rows 
   mutate(Latitude = as.numeric(Latitude),
-         Longitude = as.numeric(Longitude)) %>%  # changes longitude and latitude values to numeric
-  group_by(State, Make) %>% # group by the state and the make of the car
-  summarise(Count = n()) %>% # count the number of the occurrences of each make in each state
-  arrange(State, desc(Count)) %>% # select the car with the highest number of occurrences in each state
-  slice(1) %>%
-  ungroup() # ungroup
+         Longitude = as.numeric(Longitude)) # changes longitude and latitude values to numeric
 
-length(unique(new_cars$State)) #41 states total (excluding the non-US ones)
-length(unique(new_cars$Make)) #12 different makes of cars
+#Most common make and type of car for each state:
+common_car <- new_cars %>%
+  group_by(State, Make, Electric.Vehicle.Type) %>%
+  summarise(Count = n()) %>%
+  arrange(State, desc(Count)) %>%
+  slice(1) %>%
+  ungroup()
 
 #State capital coordinates ----
 state_capitals <- data.frame(
@@ -71,6 +75,20 @@ state_capitals <- data.frame(
                -84.0907, -112.0740, -95.7129, -77.0369, -111.8910, -75.3778, 
                -75.4694)) #gives the state capitals for each state
 
+washington_cars <- cars %>% 
+  mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", "\\1,\\2", Vehicle.Location), # removes the POINT and () around the longitude and latitude
+         Vehicle.Location = ifelse(Vehicle.Location == "", NA, Vehicle.Location)) %>% # adds NA for missing location values
+  separate(Vehicle.Location, into = c("Longitude", "Latitude"), sep = ",") %>% # splits the values into latitude and longitude
+  filter(State == "WA") %>%
+  mutate(Latitude = as.numeric(Latitude),
+         Longitude = as.numeric(Longitude)) %>%  # changes longitude and latitude values to numeric
+  group_by(County, Make) %>% # group by the state and the make of the car
+  summarise(Count = n()) %>% # count the number of the occurrences of each make in each state
+  arrange(County, desc(Count)) %>% # select the car with the highest number of occurrences in each state
+  slice(1) %>%
+  ungroup()
+
+
 #Final data for plotting ----
 cars_per_state <- new_cars %>%
   left_join(state_capitals, by = c("State" = "State"))
@@ -90,3 +108,19 @@ ggplot() +
   coord_sf(xlim = c(-170, -60), ylim = c(10, 75))  +
   theme_void()
 
+
+library(ggplot2)
+
+# Create a map
+map <- ggplot(data = washington_cars, aes(x = Longitude, y = Latitude)) +
+  geom_point(aes(fill = Make), size = 3, shape = 21) +
+  # Customize the appearance of the map
+  map <- map +
+  xlab("Longitude") +
+  ylab("Latitude") +
+  theme(legend.position = c(0.85, 0.87),
+        legend.title = element_text(text = "Most Common Make")) +
+  guides(fill = guide_legend(override.aes = list(size = 3)))
+         
+         print(map)
+         
