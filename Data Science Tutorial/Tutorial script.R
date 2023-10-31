@@ -47,19 +47,19 @@ maps_grid <- grid.arrange(terrain_map, roadmap, satellite_map, hybrid_map, ncol 
 
 #the final map
 (map_with_names <- ggmap(edi_map_satellite) +
-  geom_point(data = coords, aes(x = long, y = lat, color = type, shape = type), 
-             size = 3) +
-  scale_color_manual(values = c("#5EA8D9", "#CD6090", "#698B69", "#EEC900"),
-                     name = "Invasion type") +
-  scale_shape_manual(values = c(16, 17, 18, 15), name = "Invasion type") +
-  xlab("Longitude") +
-  ylab("Latitude") +
-  theme(legend.position = c(0.85, 0.87),
-        legend.key = element_rect(fill = "floralwhite"),
-        legend.background = element_rect(fill = "floralwhite")) +
-  ggrepel::geom_label_repel(data = coords, aes(x = long, y = lat, label = latin_name),
-                            max.overlaps = 200, box.padding = 0.5, point.padding = 0.1, 
-                            segment.color = "floralwhite", size = 3, fontface = "italic"))
+    geom_point(data = coords, aes(x = long, y = lat, color = type, shape = type), 
+               size = 3) +
+    scale_color_manual(values = c("#5EA8D9", "#CD6090", "#698B69", "#EEC900"),
+                       name = "Invasion type") +
+    scale_shape_manual(values = c(16, 17, 18, 15), name = "Invasion type") +
+    xlab("Longitude") +
+    ylab("Latitude") +
+    theme(legend.position = c(0.85, 0.87),
+          legend.key = element_rect(fill = "floralwhite"),
+          legend.background = element_rect(fill = "floralwhite")) +
+    ggrepel::geom_label_repel(data = coords, aes(x = long, y = lat, label = latin_name),
+                              max.overlaps = 200, box.padding = 0.5, point.padding = 0.1, 
+                              segment.color = "floralwhite", size = 3, fontface = "italic"))
 
 
 (map_with_codes <- ggmap(edi_map_satellite) +
