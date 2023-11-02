@@ -6,7 +6,9 @@
 ##%#########################################################################%##
 
 #WD
-setwd("Challenge") #sets WD to this folder
+setwd("~/") #erases previously set WDs
+setwd("Data Science Challenges /Challenge 1/Challenge ") #sets WD to this folder
+getwd() #check that it's worked
 
 #Libraries
 library(ggthemes)
