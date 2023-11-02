@@ -16,7 +16,7 @@ library(tidyverse)
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Weekly DS content/Weeks 6 - 8") #sets a new one
+setwd("Personal repo - zmancekpali/Weekly DS content/Weeks 6 - 8") #sets a new one
 getwd() #check that it's worked
 
 #Data
