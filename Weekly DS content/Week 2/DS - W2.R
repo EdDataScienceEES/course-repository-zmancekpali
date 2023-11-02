@@ -6,7 +6,7 @@
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Weekly DS content/Week 2") #sets a new one
+setwd("Personal repo - zmancekpali/Weekly DS content/Week 2") #sets a new one
 getwd() #check that it's worked
 
 

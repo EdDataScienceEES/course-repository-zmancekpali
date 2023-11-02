@@ -7,7 +7,7 @@
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("Dissertation") #sets a new one
+setwd("Personal repo - zmancekpali/Dissertation") #sets a new one
 getwd() #check that it's worked
 
 

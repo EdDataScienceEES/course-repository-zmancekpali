@@ -17,7 +17,7 @@ library(viridis)
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Coding Club/Week 5 - Data Visualisation") #sets a new one
+setwd("Personal repo - zmancekpali/Coding Club/Week 5 - Data Visualisation") #sets a new one
 getwd() #check that it's worked
 
 #Data

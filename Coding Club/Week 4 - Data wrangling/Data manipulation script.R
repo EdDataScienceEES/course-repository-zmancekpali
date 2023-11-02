@@ -11,7 +11,7 @@ library(tidyr)
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Coding Club/Week 4 - Data Wrangling") #sets a new one
+setwd("Personal repo - zmancekpali/Coding Club/Week 4 - Data Wrangling") #sets a new one
 getwd() #check that it's worked
 
 #Data

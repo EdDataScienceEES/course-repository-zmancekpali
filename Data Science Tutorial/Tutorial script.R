@@ -8,7 +8,7 @@
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Data Science Tutorial") #sets a new one
+setwd("Personal repo - zmancekpali/Data Science Tutorial") #sets a new one
 getwd() #check that it's worked
 
 #Libraries

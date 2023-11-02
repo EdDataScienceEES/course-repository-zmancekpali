@@ -19,7 +19,7 @@ library(yarrr)
 
 #WD
 setwd("~/") #erases previously set WDs
-setwd("DS - Personal repo - Zoja/Other useful files/Statistics assignment") #sets a new one
+setwd("Personal repo - zmancekpali/Other useful content/Stats assignment") #sets a new one
 getwd() #check that it's worked
 
 
