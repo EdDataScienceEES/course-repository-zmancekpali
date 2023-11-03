@@ -16,8 +16,8 @@ library(gridExtra)
 library(tidyverse)
 
 #Data
-LPI_data <- read.csv("LPI_birds.csv")
-site_coords <- read.csv("site_coords.csv") 
+LPI_data <- read.csv("Challenge/LPI_birds.csv")
+site_coords <- read.csv("Challenge/site_coords.csv") 
 
 #Exploring the data
 head(LPI_data)
