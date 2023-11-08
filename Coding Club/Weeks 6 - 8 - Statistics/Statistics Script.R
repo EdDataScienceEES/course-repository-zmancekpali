@@ -231,3 +231,6 @@ predictions_rs_ri <- ggpredict(plant_m_rs, terms = c("Mean.Temp", "Site"), type 
 
 
 
+
+#Bayesian modelling ----
+

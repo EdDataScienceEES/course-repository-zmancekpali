@@ -1,117 +1,159 @@
-#here is what I managed to do with the map - it gives all of the most common car 
-#makes for each WA county and it looks p good I think. 
+##%#########################################################################%##
+#                                                                             #
+#                          Data science Challenge 2                           #
+#                              Zoja Manček Páli                               #
+#                                                                             #
+##%#########################################################################%##
 
-#I was thinking we could compare this (map1) with the all-US one (map2) to see?
-#Also these are very rough - just to give an idea
+#  Working directory
+setwd("~/")
+setwd("Personal repo - zmancekpali/Data Science Challenges/Challenge 2")
+getwd()
 
-#Libraries
+#  Libraries
 library(ggmap)
-library(tibble)
+library(gridExtra)
 library(sf)
 library(tidyverse)
+library(tigris)
 
-#Data
-cars <- read.csv("Electric_Vehicle_Population_Data.csv") #data from https://catalog.data.gov/dataset/electric-vehicle-population-data
+#  Data ----
+cars <- read.csv("Challenge/Electric_Vehicle_Population_Data.csv")  # Data from https://catalog.data.gov/dataset/electric-vehicle-population-data
+ggmap::register_google(key = "AIzaSyDnersipSvcXuK4tCDbr8NOpa-qsrYf9pc", 
+                       write = TRUE)  # Register your own Google API Key here
 
-#Inspection 
+#  Inspection ----
 head(cars)
 str(cars)
 
-#Wrangling
-#Tidying the data ----
-#Washington only
-county_coordinates <- cars %>%
-  filter(State == "WA") %>%
-  mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", "\\1,\\2", Vehicle.Location), # removes the POINT and () around the longitude and latitude
-         Vehicle.Location = ifelse(Vehicle.Location == "", NA, Vehicle.Location)) %>% # adds NA for missing location values
-  separate(Vehicle.Location, into = c("Longitude", "Latitude"), sep = ",") %>% # splits the values into latitude and longitude
-  select(County, Longitude, Latitude) %>%  # select only the relevant columns
+#  Initial wrangling for the first map (map1) ----
+wa_county_coordinates <- cars %>%
+  filter(State == "WA") %>%  # Filter out WA state
+  mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", 
+                                 "\\1,\\2", Vehicle.Location),  # Removes the POINT and () around the longitude and latitude
+         Vehicle.Location = ifelse(Vehicle.Location == "", NA, 
+                                   Vehicle.Location)) %>%  # Replaces  missing location values with NAs
+  separate(Vehicle.Location, into = c("Longitude", "Latitude"), sep = ",") %>%  # Splits the location values into latitude and longitude columns
+  select(County, Longitude, Latitude) %>%  # Select only the relevant columns
   mutate(Latitude = as.numeric(Latitude),
-         Longitude = as.numeric(Longitude)) # changes longitude and latitude values to numeric
+         Longitude = as.numeric(Longitude)) # Changes longitude and latitude values to numeric
 
 washington_cars <- cars %>%
-  filter(State == "WA") %>%
-  group_by(County, Make) %>% # group by the county and the make of the car
-  summarise(Count = n()) %>% # count the number of occurrences of each make in each county
-  arrange(County, desc(Count)) %>% # select the car with the highest number of occurrences in each county
-  slice(1) %>%
+  filter(State == "WA") %>%  # Filter out WA state
+  group_by(County, Make) %>%  # Group by the county, make, and model of the car
+  summarise(Count = n()) %>%  # Count the number of occurrences of each make and model in each county
+  arrange(County, desc(Count)) %>%  # Select the car with the highest number of occurrences in each county
+  slice(1) %>%  # This makes sure you only have one value per county
+  ungroup()  # Ungroup
+
+joined <- left_join(washington_cars, wa_county_coordinates, by = "County") %>%  # Join the two datasets by the County column
+  group_by(County) %>%  # Group by county
+  arrange(County, desc(Count)) %>%  # Arrange by county in descending order
+  slice(1) %>% # This makes sure you only have one value per county
+  ungroup()  # Ungroup
+
+#  Additional wrangling for the bubble plot
+tesla_counties <- cars %>%   
+  filter(State == "WA", Make == "TESLA") %>%  # Filters data for Teslas in WA
+  group_by(County, Model) %>%  # Group by county   
+  summarise(Count = n()) %>%  # Count the number of the occurrences of Tesla in each county  
+  ungroup()  # Ungroup
+
+filtered_wa_counties <- tesla_counties %>%   
+  filter(County %in% c('King', 'Snohomish', 'Pierce'))  # Filter out the 3 counties with the most Tesla occurences
+
+#  Additional wrangling for the second map
+
+wa_counties <- counties(year = 2022, state = "WA")
+
+tesla_count_county <- cars %>% # Wrangling for Tesla count by county graph
+  filter(State == "WA", Make == "TESLA") %>% # Filters WA Tesla cars
+  group_by(County) %>% # Groups Tesla cars by county 
+  summarise(Count = n()) %>% # Gets count of Tesla cars in each county 
   ungroup()
 
-joined <- left_join(washington_cars, county_coordinates, by = "County") %>% 
-  group_by(County) %>%
-  arrange(County, desc(Count)) %>%
-  slice(1) %>%
-  ungroup() #final data for plotting
+joined2 <- wa_counties %>% 
+  left_join(tesla_count_county, by = c("NAME" = "County")) # Merged mapping data with electric vehicle data by county
 
-# All of the US
-us_cars <- cars %>%
-  filter(State != "BC" & State != "AP") %>% # remove the Non-US state rows 
-  group_by(State, Make) %>% # group by the county and the make of the car
-  summarise(Count = n()) %>% # count the number of occurrences of each make in each county
-  arrange(State, desc(Count)) %>% # select the car with the highest number of occurrences in each county
-  slice(1) %>%
-  ungroup()
-
-#State capital coordinates
-state_capitals <- data.frame(
-  State = c("WA", "IN", "NH", "VA", "NC", "GA", "CA", "NE", "CO", "NY", 
-            "MD", "DC", "AL", "LA", "IL", "TX", "FL", "AZ", "OH", "HI", "CT", 
-            "MA", "OR", "NJ", "IA", "SC", "AR", "ID", "NV", "OK", "MN", "UT", 
-            "AP", "AK", "KY", "MO", "PA", "MT", "KS", "WY", "MS", "DE"),
-  cap_lat = c(47.6097, 43.2081, 37.54, 35.7796, 33.749, 
-              38.8951, 40.8136, 39.7392, 42.6526, 38.9787, 38.8951, 
-              32.8067, 30.6954, 30.4583, 39.7817, 30.2672, 30.4383, 
-              33.4484, 39.9612, 21.3045, 41.7658, 42.3601, 44.06, 
-              40.2206, 41.5911, 33.751, 34.7465, 38.5816, 36.1699, 
-              35.4634, 44.8994, 46.5891, 38.8951, 58.3019, 61.2181, 
-              37.7749, 38.5731, 46.5891, 38.3362, 39.9526, 46.5891, 
-              39.7392),
-  cap_long = c(-122.3331, -71.5376, -77.46, -78.6382, -84.387, 
-               -77.0364, -96.7056, -104.9903, -73.7562, -76.7019, -77.0364, 
-               -117.1611, -87.7406, -91.1403, -89.6811, -97.7431, -84.2708, 
-               -112.0740, -82.9988, -157.8580, -72.6851, -71.0589, -122.8742, 
-               -74.7597, -93.6208, -84.3880, -92.2896, -93.6237, -119.7539, 
-               -97.3328, -94.6395, -93.6237, -134.4197, -149.4068, -93.6237, 
-               -84.0907, -112.0740, -95.7129, -77.0369, -111.8910, -75.3778, 
-               -75.4694)) #gives the state capitals for each state
-
-#Joined data
-joined_us <- left_join(us_cars, state_capitals, by = c("State" = "State"))
-
-
-# Maps ----
-washington_state <- c(lat = 47.751076, lon = -120.740135) 
-washington_map <- get_map(location = washington_state, zoom = 6, source = "google", maptype = "terrain")
-(washington_ggmap <- ggmap(washington_map))
+#  Maps ----
+washington_state <- c(lat = 47.751076, lon = -120.740135)  # Set centre coordinates for WA plot 
+washington_map <- get_map(location = washington_state, zoom = 6, 
+                          source = "google", maptype = "terrain")  # Get the map from Google
+(washington_ggmap <- ggmap(washington_map))  # Plot the map of WA
 joined$Make <- factor(joined$Make)
 
-# Plot 1
+#  WA Map
 (map1 <- ggmap(washington_map) +
-    geom_point(data = joined, aes(x = Longitude, y = Latitude, color = Make, shape = Make), size = 3) +
-    ggrepel::geom_label_repel(data = joined, aes(x = Longitude, y = Latitude, label = paste(County)),
-                              max.overlaps = 20, box.padding = 0.5, point.padding = 0.1, 
-                              segment.color = "black", size = 2) +
-    scale_color_manual(values = c("TESLA" = "orchid", "FORD" = "black", "CHEVROLET" = "darkblue"), guide = guide_legend(title = "Make")) +
-    scale_shape_manual(values = c("TESLA" = 15, "FORD" = 16, "CHEVROLET" = 17), guide = guide_legend(title = "Make")) +
+    geom_point(data = joined, aes(x = Longitude, y = Latitude, 
+                                  color = Make, shape = Make), size = 3) +  # Plots the county coorinates and groups them by car make
+    ggrepel::geom_label_repel(data = joined, aes(x = Longitude, y = Latitude, 
+                                                 label = paste(County)),
+                              max.overlaps = 100, box.padding = 0.5, 
+                              point.padding = 0.1, segment.color = "black", 
+                              size = 3) +  # Adds labels with county names
+    scale_color_manual(values = c("TESLA" = "darkred", "FORD" = "black", 
+                                  "CHEVROLET" = "lightpink3"), 
+                       guide = guide_legend(title = "Make")) +  # Changes the colour of the points by make
+    scale_shape_manual(values = c("TESLA" = 15, "FORD" = 16, 
+                                  "CHEVROLET" = 17), 
+                       guide = guide_legend(title = "Make")) +  # Changes the shape of the points by make
     xlab("Longitude") +
     ylab("Latitude") +
-    theme(legend.position = c(0.85, 0.87)) +
-    labs(color = "Electric car make"))
+    theme(legend.position = c(0.85, 0.87)) +  # Specify legend position
+    labs(title = "Most Common Electric Car Model in WA Counties",       
+         x = "Longitude",       
+         y = "Latitude"))
 
-ggsave("test_map_wa.png", map1, units = "cm", width = 20, height = 17)
+ggsave("map_1.png", map1, path = "Challenge/Final Plots", units = "cm", 
+       width = 20, height = 17)  # Save plot to Final Plots folder
 
+#  Bubble plot
+(bb_plot <- ggplot(filtered_counties, aes(x = Model, y = County, 
+                                          size = Count, color = Count)) +
+    geom_point(alpha = 0.6) +    
+    scale_color_gradient(low = "lightpink3", high = "darkred") + # Adjust colors as needed  
+    labs(title = "Tesla Model Counts in Washington's 3 Largest Counties",       
+         x = "Model",       
+         y = "County") +  
+    scale_size_continuous(range = c(5, 20)) +    
+    theme_minimal() +  
+    guides(size = guide_legend(title = "Count"),
+           color = guide_legend(title = "Count")) +  # Add legend 
+    theme(axis.line.x = element_line(color="black", linewidth = 0.5),
+          axis.line.y = element_line(color="black", linewidth = 0.5)))  # Add axis lines 
 
-# Plot 2
-usa <- map_data("world", region = c("USA", "Canada", 'Mexico'))
+ggsave("bubble_plot.png", bb_plot, path = "Final Plots", units = "cm", 
+       width = 20, height = 17)   # Save plot to Final Plots folder
 
-ggplot() +
-  geom_map(data = usa, map = usa, aes(x = long, y = lat, map_id = region),
-           color = "gray80", fill = "gray80") +
-  geom_path(data = usa, aes(x = long, y = lat, group = group), color = "black", linewidth = 0.3) +
-  geom_point(data = joined_us, aes(x = cap_long, y = cap_lat), 
-             alpha = 0.8, color = "red", size = 3) +
-  ggrepel::geom_label_repel(data = joined_us, aes(x = cap_long, y = cap_lat, label = Make),
-                            max.overlaps = 100, box.padding = 0.5, point.padding = 0.1, 
-                            segment.color = "blue", size = 2) +
-  coord_sf(xlim = c(-170, -60), ylim = c(10, 75))  +
-  theme_void()
+#  WA Tesla Count by County Map
+(map2 <- ggplot(data = joined2) +
+    geom_sf(aes(fill = Count), color = "white") +
+    scale_fill_distiller(palette = "Reds", direction = 1, 
+                         breaks = c(0, 1000, 5000, 10000, 20000, 35000)) +  # Adjusts the count bar
+    labs(title = "Tesla Count by Washington State County",
+         fill = "Count") +
+    theme_minimal() +
+    theme(panel.grid.major = element_blank()) +
+    theme(axis.text.x = element_blank(),
+          axis.text.y = element_blank(),
+          axis.ticks = element_blank(),
+          plot.background = element_rect(fill = "white"),
+          plot.title = element_text(family = "Georgia",size = 12, face = "bold", 
+                                    vjust = -1),
+          legend.title = element_text(family = "Georgia", size = 8, face = "bold"),
+          legend.position = "right") +
+    guides(fill = guide_legend(keywidth = 6, keyheight = 6) +
+             geom_sf_label(data = merged_data, aes(label = NAME), size = 7)) +
+    ggrepel::geom_label_repel(data = joined, aes(x = Longitude, y = Latitude, 
+                                                 label = paste(County)),
+                              max.overlaps = 100, box.padding = 0.5, 
+                              point.padding = 0.1, segment.color = "black", 
+                              size = 3))  # Adds labels with county names
+
+ggsave("map_2.png", map2, path = "Final Plots", units = "cm", 
+       width = 20, height = 17)   # Save plot to Final Plots folder
+
+#  Arrange the plots
+grid <- grid.arrange(map1, map2, bb_plot, ncol = 3)
+ggsave("grid.png", grid, path = "Final Plots", units = "cm",
+       width = 50, height = 17)  # Save plot to Final Plots folder

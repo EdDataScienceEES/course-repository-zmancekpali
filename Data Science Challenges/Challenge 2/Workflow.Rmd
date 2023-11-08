@@ -1,0 +1,20 @@
+## Workflow for challenge 2
+1. Import data
+2. Inspect the data
+3. Wrangle:
+  - Filter out WA state
+  - Change the location column from character to numeric and tidy the formatting; separate into two columns (longitude and latitude;            county_coordinates)
+  - Filter out the county, make, and model columns from the original dataset, and select the most common make and model of electric car for     each county (washington_cars)
+  - Join the two datasets together to be ready for plotting.
+  - Load the necessary API key for plotting with ggmap
+4. Tidy the code (format the comments consistently, make wrangling as efficient as possible)
+### Bubble plot
+5. Filter
+  - State Filtering: Rows with states "BC" and "AP" are filtered out to remove non-US state rows.
+  - Make & State Filtering: The dataset is further filtered to only include entries where the state is "Washington (WA)" and the car make       is “TESLA”, and keep the data with both County in WA and their Model
+  - County Filtering: The dataset is filtered again to include only specific counties: 'King', 'Snohomish', and ‘Pierce’.
+6. Data Visualisation
+  - X-axis: Represents different Tesla models.
+  - Y-axis: Represents the counties.
+  - Bubble Size: Represents the count of Teslas.
+  - Bubble Color: Also represents the count of Teslas, with the color gradient going from "lightpink" to "darkred" based on the count.
