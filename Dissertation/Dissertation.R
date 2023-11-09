@@ -370,12 +370,12 @@ bartlett.test(transformed_lma ~ type, data = trees) #heteroscedascity
           plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
           legend.position = "top"))
 
-ggsave("lma_boxplot2.jpg", lma_boxplot2, units = "cm", width = 30, height = 15) 
+ggsave("lma_boxplot2.jpg", lma_boxplot2, path = "Plots", units = "cm", width = 30, height = 15) 
 
 
 
 #Dunn post-hoc test
-dunn_lma_2 <- dunn.test(nns$lma, nns$code_2, method = "bonferroni") #invasives differ significantly from natives yay
+dunn_lma_2 <- dunn.test(trees$lma, trees$code_two, method = "bonferroni") #invasives differ significantly from natives yay
 #naturalised also differ significantly from natives
 
 
