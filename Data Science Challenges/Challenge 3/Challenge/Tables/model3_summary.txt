@@ -1,0 +1,33 @@
+Generalized linear mixed model fit by maximum likelihood (Laplace
+  Approximation) [glmerMod]
+ Family: poisson  ( log )
+Formula: 
+abundance ~ sqrt(year) + Country.list + (1 | Location.of.population) +  
+    (1 | year)
+   Data: orca
+
+     AIC      BIC   logLik deviance df.resid 
+   900.9    914.2   -445.4    890.9      100 
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-3.2766 -0.7015  0.0439  0.5778  4.3525 
+
+Random effects:
+ Groups                 Name        Variance Std.Dev.
+ year                   (Intercept) 0.1674   0.4092  
+ Location.of.population (Intercept) 0.9961   0.9981  
+Number of obs: 105, groups:  year, 21; Location.of.population, 9
+
+Fixed effects:
+                          Estimate Std. Error z value Pr(>|z|)    
+(Intercept)                 3.2556     0.6480   5.024 5.06e-07 ***
+sqrt(year)                  1.2446     0.2773   4.489 7.16e-06 ***
+Country.listUnited States  -0.2438     0.7069  -0.345     0.73    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Correlation of Fixed Effects:
+            (Intr) sqrt()
+sqrt(year)  -0.434       
+Cntry.lstUS -0.730  0.009

@@ -1,0 +1,10 @@
+**This document explains some changes made since preregistration and the reasons behind the choices made.**
+
+The first point of deviation from the initial preregistration is the way I ended up filtering the sampling units: I decided not to include estimated abundance, estimated density, and frequency of groups sighted as sampling units for clarity as I could not find any information in the metadata about how these values were estimated and collected (i.e. over what area/time). 
+
+Additionally, I also decided not to nest the sites within the countries. I also ended up excluding the site "Inside Passage, between the British Columbia-Washington and the British Columbia-Alaska borders' as it only had two data points (which could skew my analysis). The finalised research questions are thus slightly different, as follows: 
+1. How does the abundance of *O. orca* species vary over time in US marine habitats?
+2. How does the abundance of *O. orca* vary over time within the US marine habitats?
+This change means I will not need to nest the location sites within the countries either, so my remaining random effects will be site and year, and the two fixed effects will be the year and the country. The new combined sample size is thus 212. 
+
+The third deviation from the initial preregistration is that I ended up using both a GLMM and a GAM to test these relationships. As you will see, the GLMM did not meet the assumptions necessary, and after transformation, it was still not meeting them completely. At this point I decided to use a GAM as they are more flexible with non-linear relationships. 

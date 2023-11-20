@@ -1,0 +1,25 @@
+
+Family: poisson 
+Link function: log 
+
+Formula:
+Abundance ~ s(Year, k = 40) + s(Country.list, bs = "fs") + s(Location.of.population, 
+    bs = "re") + s(Year, bs = "re", k = 40)
+
+Parametric coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)    3.959      2.120   1.867   0.0618 .
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Approximate significance of smooth terms:
+                                edf Ref.df Chi.sq p-value    
+s(Year)                   1.815e+01  22.49  536.8  <2e-16 ***
+s(Country.list)           1.866e-08   1.00    0.0   0.962    
+s(Location.of.population) 8.000e+00   8.00 4962.3  <2e-16 ***
+s(Year)                   1.628e-31   1.00    0.0   0.500    
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+R-sq.(adj) =  0.951   Deviance explained = 93.3%
+UBRE =  1.618  Scale est. = 1         n = 212

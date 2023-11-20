@@ -6,6 +6,7 @@
 
 #Libraries
 library(agridat)
+library(brms)
 library(dplyr)
 library(ggeffects)
 library(ggplot2)
@@ -15,6 +16,7 @@ library(MCMCglmm)
 library(MCMCvis)
 library(sjPlot)
 library(stargazer)
+library(tidybayes)
 library(tidyverse)
 
 
@@ -229,8 +231,99 @@ predictions_rs_ri <- ggpredict(plant_m_rs, terms = c("Mean.Temp", "Site"), type 
     labs(x = "\nMean annual temperature", y = "Predicted species richness\n")) #more honest random slope graph 
 
 
-
-
-
 #Bayesian modelling ----
+France <- read_csv("red_knot.csv")
 
+head(France) 
+str(France)
+
+(hist_france <- ggplot(France, aes(x = pop)) +
+    geom_histogram(colour = "#8B5A00", fill = "#CD8500") +
+    theme_bw() +
+    ylab("Count\n") +
+    xlab("\nCalidris canutus abundance") +  # latin name for red knot
+    theme(axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14, face = "plain")))     
+
+unique(France$year) #35 years
+
+france1_mbrms <- brms::brm(pop ~ I(year - 1975),
+                           data = France, family = poisson(), chains = 3,
+                           iter = 3000, warmup = 1000)
+summary(france1_mbrms)
+#The interesting part is what is written under Population-Level Effects. The model gives us an 
+#Estimate aka the mean of our posterior distribution for each variable. As explained earlier, these estimates 
+#can be used as the intercept and slope for the relationship between our two variables. Est.Error is the error 
+#associated with those means (the standard error). The other important part of that summary is the 95%
+#Credibility Interval (CI), which tells us the interval in which 95% of the values of our posterior distribution 
+#fall. The thing to look for is the interval between the values of l-95% CI and u-95% CI. If this interval is 
+#strictly positive or negative, we can assume that the effect is significant (and positive or negative respectively). 
+#However, if the interval encompasses 0, then we can’t be sure that the effect isn’t 0, aka non-significant. In addition, 
+#the narrower the interval, the more precise the estimate of the effect. In our case, the slope 95% CI does not 
+#encompass 0 and it is strictly positive, so we can say that time has a significantly positive effect on red knot abundance.
+
+plot(france1_mbrms)
+#We call this the trace or caterpillar plots. If you focus on the right hand plots, you want to see a sort of 
+#fuzzy caterpillar, or a festive tinsel. If this is the case, it means your model explored all the possible 
+#values it could look at, so it convergedwell. On the x-axis of those trace plots, we have the iterations done after the warmup 
+#(so 3000-1000 = 2000 in our case). And on the y-axis are all the values of the mean of the posterior 
+#distribution that have been assessed by our model. On the left side, the density plots shows all of those mean 
+#values again, plotted by the amount of times the model got this value (so the distribution of means basically). 
+#And if you look closely, the mean of this density plot is going to be the mean value that has been found by the 
+#model most often, so probably the most “correct” one. And that value should be very close to the actual estimate
+#that the summary function gave us. In our case, the top plot is the intercept and that density plot seems to be 
+#centered around 8.70, which is the estimate value that we got in the summary!
+
+pp_check(france1_mbrms) #similar enough
+
+#adding random effects
+france2_mbrms <- brms::brm(pop ~ I(year - 1975) + (1|year),
+                           data = France, family = poisson(), chains = 3,
+                           iter = 3000, warmup = 1000)
+summary(france2_mbrms)
+plot(france2_mbrms) #looks good
+
+unique(France$Location.of.population)  #observations come from 2 locations
+
+(boxplot_location <- ggplot(France, aes(Location.of.population, pop)) +
+    geom_boxplot() +  #could be a significant effect between locations so should look at that
+    theme_bw() +
+    xlab("Location\n") +
+    ylab("\nCalidris canutus abundance") +
+    theme(axis.text = element_text(size = 12),
+          axis.title = element_text(size = 14, face = "plain"))) #difference between the sites
+
+france3_mbrms <- brms::brm(pop ~ I(year - 1975) + Location.of.population,
+                           data = France, family = poisson(), chains = 3,
+                           iter = 3000, warmup = 1000)
+summary(france3_mbrms)
+plot(france3_mbrms)
+pp_check(france3_mbrms)
+loo(france1_mbrms,france2_mbrms, france3_mbrms, compare = TRUE) #the one that = 0 is the best (aka france3_mbrms)
+
+(model_fit <- France %>%
+    add_predicted_draws(france3_mbrms) %>%  # adding the posterior distribution
+    ggplot(aes(x = year, y = pop)) +  
+    stat_lineribbon(aes(y = .prediction), .width = c(.95, .80, .50),  # regression line and CI
+                    alpha = 0.5, colour = "black") +
+    geom_point(data = France, colour = "darkseagreen4", size = 3) +   # raw data
+    scale_fill_brewer(palette = "Greys") +
+    ylab("Calidris canutus abundance\n") +  # latin name for red knot
+    xlab("\nYear") +
+    theme_bw() +
+    theme(legend.title = element_blank(),
+          legend.position = c(0.15, 0.85)))
+
+(location_fit <- France %>%
+    group_by(Location.of.population) %>%
+    add_predicted_draws(france3_mbrms) %>%
+    ggplot(aes(x = year, y = pop, color = ordered(Location.of.population), fill = ordered(Location.of.population))) +
+    stat_lineribbon(aes(y = .prediction), .width = c(.95, .80, .50), alpha = 1/4) +
+    geom_point(data = France) +
+    scale_fill_brewer(palette = "Set2") +
+    scale_color_brewer(palette = "Dark2") +
+    theme_bw() +
+    ylab("Calidris canutus abundance\n") +
+    xlab("\nYear") +
+    theme_bw() +
+    theme(legend.title = element_blank()))
