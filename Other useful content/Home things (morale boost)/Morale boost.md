@@ -1,0 +1,1 @@
+This folder contains some pictures of the various homes I return to ever so often (depending on the time of year). The pictures serve as a nice morale boost (and a palette cleanser from the computer) for you too look at between the different folders if you wish - if you enjoy a good sunset/sunrise/nature picture like I do, I think you'll enjoy these. 

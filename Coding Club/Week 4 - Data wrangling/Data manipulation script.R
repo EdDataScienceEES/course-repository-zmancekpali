@@ -4,21 +4,21 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#Libraries
-library(dplyr)
-library(ggplot2)
-library(tidyr)
-
 #WD
 setwd("~/") #erases previously set WDs
 setwd("Personal repo - zmancekpali/Coding Club/Week 4 - Data Wrangling") #sets a new one
 getwd() #check that it's worked
 
+#Libraries
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
 #Data
-elongation <- read.csv("EmpetrumElongation.csv", header = TRUE) 
-treatments <- read.csv("EmpetrumTreatments.csv", header = TRUE, sep = ";")
-dragons <- read.csv("dragons.csv", header = TRUE)
-trees <- read.csv("trees.csv", header = TRUE)
+elongation <- read.csv("Data/EmpetrumElongation.csv", header = TRUE) 
+treatments <- read.csv("Data/EmpetrumTreatments.csv", header = TRUE, sep = ";")
+dragons <- read.csv("Data/dragons.csv", header = TRUE)
+trees <- read.csv("Data/trees.csv", header = TRUE)
 
 #Data manipulation (https://ourcodingclub.github.io/tutorials/data-manip-intro/) 
 #Inspecting the data ----
@@ -232,7 +232,8 @@ tree.plots <-
 tree.plots$plots
 tree.plots %>%  
   do(.,
-     ggsave(.$plots, filename = paste(getwd(), "/", "map-", .$Genus, ".png", sep = ""), device = "png", height = 12, width = 16, units = "cm"))
+     ggsave(.$plots, filename = paste(getwd(), "/", "map-", .$Genus, ".png", sep = ""), 
+            device = "png", height = 12, width = 16, units = "cm", path = "Plots"))
 
 #Challenge
 lon <- (max(trees.genus$Easting) - min(trees.genus$Easting))/2 + min(trees.genus$Easting)

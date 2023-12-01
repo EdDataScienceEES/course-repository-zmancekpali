@@ -5,6 +5,11 @@
 #                                                                             #
 ##%#########################################################################%##
 
+#WD
+setwd("~/") #erases previously set WDs
+setwd("Personal repo - zmancekpali/Coding Club/Weeks 6 - 8 - Statistics") #sets a new one
+getwd() #check that it's worked
+
 #Libraries
 library(agridat)
 library(brms)
@@ -20,18 +25,12 @@ library(stargazer)
 library(tidybayes)
 library(tidyverse)
 
-
-#WD
-setwd("~/") #erases previously set WDs
-setwd("Personal repo - zmancekpali/Coding Club/Weeks 6 - 8 - Statistics") #sets a new one
-getwd() #check that it's worked
-
 #Data
 apples <- agridat::archbold.apple
-shag <- read.csv("shagLPI.csv", header = TRUE)
+shag <- read.csv("Data/shagLPI.csv", header = TRUE)
 sheep <- agridat::ilri.sheep
-toolik_plants <- read.csv("toolik_plants.csv")
-Weevil_damage <- read.csv("Weevil_damage.csv")
+toolik_plants <- read.csv("Data/toolik_plants.csv")
+Weevil_damage <- read.csv("Data/Weevil_damage.csv")
 
 
 #Linear models ----

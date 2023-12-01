@@ -4,6 +4,11 @@
 #                                                                             #
 ##%#########################################################################%##
 
+#WD
+setwd("~/") #erases previously set WDs
+setwd("Personal repo - zmancekpali/Coding Club/Week 5 - Data Visualisation") #sets a new one
+getwd() #check that it's worked
+
 #Libraries
 library(colourpicker)
 library(dplyr)
@@ -15,17 +20,12 @@ library(readr)
 library(tidyr)
 library(viridis)
 
-#WD
-setwd("~/") #erases previously set WDs
-setwd("Personal repo - zmancekpali/Coding Club/Week 5 - Data Visualisation") #sets a new one
-getwd() #check that it's worked
-
 #Data
-LPI <- read.csv("LPIdata_CC.csv")
+LPI <- read.csv("Data/LPIdata_CC.csv")
 LPI2 <- gather(LPI, "year", "abundance", 9:53)
-magic_veg <- read.csv("magic_veg.csv")
-lter <- read.csv("lter.csv")
-niwot_plant_exp <- read.csv("niwot_plant_exp.csv")
+magic_veg <- read.csv("Data/magic_veg.csv")
+lter <- read.csv("Data/lter.csv")
+niwot_plant_exp <- read.csv("Data/niwot_plant_exp.csv")
 
 #Exploration
 str(LPI2)
@@ -156,7 +156,7 @@ grid.arrange(vulture_hist, vulture_scatter, vulture_boxplot, ncol = 1)
           legend.title = element_blank(),                                   
           legend.position = c(0.85, 0.85)), # changing the legend position so that it fits within the panel
   ncol = 1)) # ncol determines how many columns you have
-ggsave(panel, file = "vulture_panel2.png", width = 5, height = 12) 
+ggsave("vulture_panel2.png", panel, path = "Plots", width = 5, height = 12) 
 
 
 #Challenge ----
@@ -177,7 +177,8 @@ ruff <- filter(LPI2, Common.Name == "Ruff") %>% na.omit(ruff)
     ylab("Ruff abundance\n") +                             
     xlab("\nYear"))
 challenge_scatter_grid <- grid.arrange(razorbill_scatter, ruff_scatter, ncol = 2)
-ggsave(challenge_scatter_grid, file = "Challenge_species_scatter_grid.jpg", width = 12, height = 5)
+ggsave(challenge_scatter_grid, file = "Challenge_species_scatter_grid.jpg", path = "Plots",
+       width = 12, height = 5)
 
 #Boxplots (meant to be 5 countries but these two species only intersect in two so I will do two)
 common_countries <- intersect(unique(ruff$Country.list), unique(razorbill$Country.list))
@@ -243,7 +244,7 @@ species_counts <- magic_veg %>%
           legend.title = element_text(face = "bold"),
           legend.position = "bottom", 
           legend.box.background = element_rect(color = "grey", linewidth = 0.3))) 
-ggsave("narnia_hist.png", narnia_hist, width = 7, height = 5, dpi = 300)
+ggsave("narnia_hist.png", narnia_hist, path = "Plots", width = 7, height = 5, dpi = 300) #either way of saving the plots works
 
 #Create own colour palette
 land <- factor(c("Narnia", "Hogsmeade", "Westeros", "The Shire", "Mordor", "Forbidden Forest", "Oz"))
