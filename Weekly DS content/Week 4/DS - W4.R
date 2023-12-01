@@ -13,14 +13,13 @@
     #Make sure columns are in the correct format (numeric, character, or factor)
     #Figure out workflow
 
-#Libraries:
-library(tidyverse)
-
 #WD
 setwd("~/") #erases previously set WDs
 setwd("Personal repo - zmancekpali/Weekly DS content/Week 4") #sets a new one
 getwd() #check that it's worked
 
+#Libraries:
+library(tidyverse)
 
 #Data:
 load("/Users/zojamancekpali/DS - Personal repo - Zoja/Weekly DS Content/Week 4/LPI_species.Rdata")

@@ -4,6 +4,11 @@
 #                                                                             #
 ##%#########################################################################%##
 
+#WD
+setwd("~/") #erases previously set WDs
+setwd("Personal repo - zmancekpali/Weekly DS content/Weeks 6 - 8") #sets a new one
+getwd() #check that it's worked
+
 #Libraries
 library(brms)
 library(broom)
@@ -16,11 +21,6 @@ library(sjPlot)
 library(StatisticalModels)
 library(tidyverse)
 remotes::install_github("timnewbold/StatisticalModels")
-
-#WD
-setwd("~/") #erases previously set WDs
-setwd("Personal repo - zmancekpali/Weekly DS content/Weeks 6 - 8") #sets a new one
-getwd() #check that it's worked
 
 #Data
 toolik_plants <- read_csv("toolik_plants.csv")

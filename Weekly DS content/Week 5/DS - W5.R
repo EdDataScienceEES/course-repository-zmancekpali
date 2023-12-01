@@ -4,14 +4,14 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#Libraries
-library(tidyverse)
-library(scales)
-
 #WD
 setwd("~/") #erases previously set WDs
 setwd("Personal repo - zmancekpali/Weekly DS content/Week 5") #sets a new one
 getwd() #check that it's worked
+
+#Libraries
+library(tidyverse)
+library(scales)
 
 #Data
 LPI_data <- read.csv("LPI_data.csv")
@@ -56,6 +56,7 @@ biome_colors <- rep("#615523", length(unique(LPI_Bar$biome)))
          subtitle = "Good luck lol",
          caption = "don't cry"))
 
-ggsave(LPI_Bargraph, file = "hanan_hannah_zoja_ugly_graph.jpg", units = "cm", width = 50, height = 30)
+ggsave(LPI_Bargraph, file = "hanan_hannah_zoja_ugly_graph.jpg", path = "Plots",
+       units = "cm", width = 50, height = 30)
 
 

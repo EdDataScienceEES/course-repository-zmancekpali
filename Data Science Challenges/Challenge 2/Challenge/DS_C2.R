@@ -5,28 +5,28 @@
 #                                                                             #
 ##%#########################################################################%##
 
-#  Working directory
+#WD
 setwd("~/")
 setwd("Personal repo - zmancekpali/Data Science Challenges/Challenge 2")
 getwd()
 
-#  Libraries
+#Libraries
 library(ggmap)
 library(gridExtra)
 library(sf)
 library(tidyverse)
 library(tigris)
 
-#  Data ----
+#Data
 cars <- read.csv("Challenge/Electric_Vehicle_Population_Data.csv")  # Data from https://catalog.data.gov/dataset/electric-vehicle-population-data
 ggmap::register_google(key = "AIzaSyDnersipSvcXuK4tCDbr8NOpa-qsrYf9pc", 
                        write = TRUE)  # Register your own Google API Key here
 
-#  Inspection ----
+#Inspection
 head(cars)
 str(cars)
 
-#  Initial wrangling for the first map (map1) ----
+#Initial wrangling for the first map (map1) ----
 wa_county_coordinates <- cars %>%
   filter(State == "WA") %>%  # Filter out WA state
   mutate(Vehicle.Location = gsub("POINT \\((-?\\d+\\.\\d+) (-?\\d+\\.\\d+)\\)", 
@@ -52,7 +52,7 @@ joined <- left_join(washington_cars, wa_county_coordinates, by = "County") %>%  
   slice(1) %>% # This makes sure you only have one value per county
   ungroup()  # Ungroup
 
-#  Additional wrangling for the bubble plot
+#Additional wrangling for the bubble plot
 tesla_counties <- cars %>%   
   filter(State == "WA", Make == "TESLA") %>%  # Filters data for Teslas in WA
   group_by(County, Model) %>%  # Group by county   
@@ -62,7 +62,7 @@ tesla_counties <- cars %>%
 filtered_wa_counties <- tesla_counties %>%   
   filter(County %in% c('King', 'Snohomish', 'Pierce'))  # Filter out the 3 counties with the most Tesla occurences
 
-#  Additional wrangling for the second map
+#Additional wrangling for the second map
 
 wa_counties <- counties(year = 2022, state = "WA")
 
@@ -75,14 +75,14 @@ tesla_count_county <- cars %>% # Wrangling for Tesla count by county graph
 joined2 <- wa_counties %>% 
   left_join(tesla_count_county, by = c("NAME" = "County")) # Merged mapping data with electric vehicle data by county
 
-#  Maps ----
+#Maps ----
 washington_state <- c(lat = 47.751076, lon = -120.740135)  # Set centre coordinates for WA plot 
 washington_map <- get_map(location = washington_state, zoom = 6, 
                           source = "google", maptype = "terrain")  # Get the map from Google
 (washington_ggmap <- ggmap(washington_map))  # Plot the map of WA
 joined$Make <- factor(joined$Make)
 
-#  WA Map
+#WA Map
 (map1 <- ggmap(washington_map) +
     geom_point(data = joined, aes(x = Longitude, y = Latitude, 
                                   color = Make, shape = Make), size = 3) +  # Plots the county coorinates and groups them by car make
@@ -104,10 +104,10 @@ joined$Make <- factor(joined$Make)
          x = "Longitude",       
          y = "Latitude"))
 
-ggsave("map_1.png", map1, path = "Challenge/Final Plots", units = "cm", 
+ggsave("map_1.png", map1, path = "Plots", units = "cm", 
        width = 20, height = 17)  # Save plot to Final Plots folder
 
-#  Bubble plot
+#Bubble plot
 (bb_plot <- ggplot(filtered_counties, aes(x = Model, y = County, 
                                           size = Count, color = Count)) +
     geom_point(alpha = 0.6) +    
@@ -122,10 +122,10 @@ ggsave("map_1.png", map1, path = "Challenge/Final Plots", units = "cm",
     theme(axis.line.x = element_line(color="black", linewidth = 0.5),
           axis.line.y = element_line(color="black", linewidth = 0.5)))  # Add axis lines 
 
-ggsave("bubble_plot.png", bb_plot, path = "Final Plots", units = "cm", 
+ggsave("bubble_plot.png", bb_plot, path = "Challenge/Final Plots", units = "cm", 
        width = 20, height = 17)   # Save plot to Final Plots folder
 
-#  WA Tesla Count by County Map
+#WA Tesla Count by County Map
 (map2 <- ggplot(data = joined2) +
     geom_sf(aes(fill = Count), color = "white") +
     scale_fill_distiller(palette = "Reds", direction = 1, 
@@ -150,10 +150,10 @@ ggsave("bubble_plot.png", bb_plot, path = "Final Plots", units = "cm",
                               point.padding = 0.1, segment.color = "black", 
                               size = 3))  # Adds labels with county names
 
-ggsave("map_2.png", map2, path = "Final Plots", units = "cm", 
+ggsave("map_2.png", map2, path = "Challenge/Final Plots", units = "cm", 
        width = 20, height = 17)   # Save plot to Final Plots folder
 
-#  Arrange the plots
+#Arrange the plots
 grid <- grid.arrange(map1, map2, bb_plot, ncol = 3)
-ggsave("grid.png", grid, path = "Final Plots", units = "cm",
+ggsave("grid.png", grid, path = "Challenge/Final Plots", units = "cm",
        width = 50, height = 17)  # Save plot to Final Plots folder
