@@ -14,7 +14,7 @@ Each section of the course is split into individual folders:
   - [Tutorial](https://github.com/EdDataScienceEES/course-repository-zmancekpali/tree/master/Data%20Science%20Tutorial) - this folder contains further subfolders for the DS Tutorial, including the data, scripts, plots, and the respective licence.
   - [Weekly in-class content](https://github.com/EdDataScienceEES/course-repository-zmancekpali/tree/master/Weekly%20DS%20content) - this folder contains further subfolders for each week's in-class activity.
   - [Dissertation](https://github.com/EdDataScienceEES/course-repository-zmancekpali/tree/master/Dissertation) - this folder contains my dissertation plan, the current script (a work in progress), and any plots made so far. 
-  - [Additional files](https://github.com/EdDataScienceEES/course-repository-zmancekpali/tree/master/Other%20useful%20content) - this folder contains miscelaneous other folders like useful functions, the statistics assessment, and a morale boost for when you've looked at the computer for far too long and would like to be outside instead. 
+  - [Additional files](https://github.com/EdDataScienceEES/course-repository-zmancekpali/tree/master/Other%20useful%20content) - this folder contains miscelaneous other folders like useful functions, the statistics assessment, and a morale boost for when you've looked at the computer for far too long and would like to be outside instead :). 
 
 __________
 ## Coding etiquette for this repository:
