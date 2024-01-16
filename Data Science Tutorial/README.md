@@ -1,0 +1,39 @@
+# Visualising spatial data with ggplot and Google Maps
+Due date: December 4th, noon (after extension)
+
+**This repository contains the scripts, plots, and markdown files associated with the Tutorial assignment of Data Science in Ecological and Environmental Sciences, 2023.** 
+
+
+![pic](https://cdn.arstechnica.net/wp-content/uploads/2023/09/Google-Maps-640x361.jpg)
+
+Image credit: Google Maps
+
+**Please note that I have shared my repo with @hananafiqah02 for feedback, and I've also given her some feedback on her repository as well**
+
+
+_____________
+## Repository organisation and rules:
+**Repository layout:**
+- The licence for using this repository and the data within it can be found at: [licence](https://github.com/EdDataScienceEES/tutorial-zmancekpali/blob/master/LICENSE)
+- The various Tutorial contents (including the data) can be found at:
+    - [Instructions](https://github.com/EdDataScienceEES/tutorial-zmancekpali/blob/master/Additional%20files%20/Instructions%20and%20marking%20criteria.Rmd)
+    - [Data](https://github.com/EdDataScienceEES/tutorial-zmancekpali/tree/master/Data)
+    - [Script](https://github.com/EdDataScienceEES/tutorial-zmancekpali/blob/master/Script/Tutorial%20script.R)
+    - [Plots](https://github.com/EdDataScienceEES/tutorial-zmancekpali/tree/master/Plots)
+    - [Final report](https://github.com/EdDataScienceEES/tutorial-zmancekpali/blob/master/Tutorial%20text.md)
+    - [Additional files](https://github.com/EdDataScienceEES/tutorial-zmancekpali/tree/master/Additional%20files%20) contain the .RData, tutorial text (.html file), .gitignore, .Rhistory, and the tutorial .Rproj
+
+
+**Coding etiquette for this repository:**
+The following rules should be upheld at all times when coding or working within this repository.
+1. Informative comments are included throughout the code, using the hashtag (#) symbol. There are no spaces before the hashtags.
+2. The code is spaced out adequately to make it easier to read.
+3. The work is broken down into sections (by adding ---- at the end of each section title if necessary).
+4. All objects are given informative names (using snake case if necessary).
+5. Keep your code to under 100 characters in length per line (comments can extend past that if necessary; if a comment extends to the following line, it is not capitalised - to ensure consistency and a logical way of following the comments).
+6. The script begins with setting the working directory, importing the libraries, and then the data. The consequent sections follow the logic of the assignment as necessary. 
+
+______________
+## References:
+
+Google Maps (2023). _Google Maps Logo_. Available at: <https://www.google.com/maps/@55.9503053,-3.1918862,14z?entry=ttu>.
