@@ -24,7 +24,6 @@ library(MASS)
 library(multcomp)
 library(stats)
 library(tidyverse)
-library(vegan)
 
 #Data
 trees <- read.csv("og_traits.csv")
