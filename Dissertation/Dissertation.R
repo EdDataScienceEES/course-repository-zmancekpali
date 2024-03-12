@@ -276,7 +276,7 @@ ggsave("e_boxplot.jpg", e_boxplot, path = "Plots", units = "cm", width = 20, hei
 
 #Tukey's Honestly Significant Difference post-hoc test
 aov_e <- aov(E ~ type, data = nns)
-tukey_e <- TukeyHSD(aov_e)
+(tukey_e <- TukeyHSD(aov_e))
 #no significant differences
 
 
@@ -319,37 +319,6 @@ ggsave("g_boxplot.jpg", g_boxplot, path = "Plots", units = "cm", width = 20, hei
 #Dunn post-hoc test
 dunn_g <- dunn.test(nns$g, nns$type, method = "bonferroni") #invasive differ significantly from natives and naturalised yay
 #naturalised and natives show no significant difference
-
-
-#dark respiration models and boxplot ----
-dr_mod1 <- lm(Dark_resp ~ type, data = nns)
-autoplot(dr_mod1)
-shapiro.test(resid(dr_mod1)) #residuals not distributed normally
-bartlett.test(Dark_resp ~ type, data = nns) #homoscedascity (barely)
-
-#can't do a Box-Cox bc the values are negative
-kruskal.test(Dark_resp ~ type, data = nns) #p-value = 0.7791; NS
-
-(dr_boxplot <- ggplot(nns, 
-                      aes(x = factor(type, levels = c('Native', 'Naturalised', 'Invasive')), #reorders the types 
-                          y = Dark_resp, fill = type)) + 
-    geom_boxplot() + #creates the boxplot
-    stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
-    scale_fill_manual(values = traits.palette) + 
-    labs(x = "\n Invasion status", 
-         y = expression(atop(paste("Dark respiration rate (", mu, "mol CO"[2] ~ "m"^-2*~"s"^-1, ")")))) +
-    theme_classic() + 
-    theme(axis.text = element_text(size = 10), 
-          axis.title = element_text(size = 11), 
-          plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
-          legend.position = "none"))
-
-ggsave("dr_boxplot.jpg", dr_boxplot, path = "Plots", units = "cm", width = 20, height = 15) 
-
-#No dunn since no significant effect
-
-
 
 
 #%C ----
@@ -755,6 +724,54 @@ dunn_g_2 <- dunn.test(trees$g, trees$code_two, method = "bonferroni") #invasives
 
 
 
+
+
+
+#C:N ----
+cn_mod2 <- lm(c_n ~ code_two, data = cn_trees)
+autoplot(cn_mod2)
+shapiro.test(resid(cn_mod2)) #residuals not distributed normally
+bartlett.test(c_n ~ code_two, data = cn_trees) #homoscedascity
+
+#Attempt mathematical transformation first to meet ANOVA assumptions:
+cn_boxcox2 <- boxcox(c_n ~ 1, data = cn_trees) #the λ is the highest point on the curve
+(cn_lambda2 <- cn_boxcox2$x[which.max(cn_boxcox2$y)]) #λ = 0.5454545
+cn_trees <- cn_trees %>% mutate(transformed_cn2 = (c_n ^ (cn_lambda2 - 1)) / cn_lambda2) #Box-Cox transformation applied in a new column
+
+cn_mod_trans2 <- lm(transformed_cn2 ~ code_two, data = cn_trees)
+autoplot(cn_mod_trans2)
+shapiro.test(resid(cn_mod_trans2)) #residuals distributed normally
+bartlett.test(transformed_cn2 ~ code_two, data = cn_trees) #homoscedascity
+
+
+
+#Transformation did not work, moving on to non-parametric alternative:
+(cn_kw2 <- kruskal.test(c_n ~ code_two, data = cn_trees)) #p-value = 0.0002684; significant
+
+(cn_boxplot2 <- ggplot(cn_trees, 
+                      aes(x = factor(code_two, levels = c('Native', 'Naturalised', 'Invasive', 
+                                                          'C. bullatus', 'Q. cerris', "Q. ilex", 
+                                                          'R. pseudoacacia semperflorens')), #reorders the types 
+                          y = c_n, fill = code_two)) + 
+    geom_boxplot() + #creates the boxplot
+    stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
+    geom_jitter() + #adds the jitter
+    scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
+                                   "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
+                                   "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
+                                   "R. pseudoacacia semperflorens" = "steelblue3")) + 
+    labs(x = "\n Invasion status", 
+         y = expression(atop("C:N"))) + 
+    theme_classic() + 
+    theme(axis.text = element_text(size = 10), 
+          axis.title = element_text(size = 11), 
+          plot.margin = unit(c(0.5,0.5,0.5,0.5), units = , "cm"), 
+          legend.position = "none"))
+
+ggsave("cn_boxplot2.jpg", cn_boxplot2, path = "Plots", units = "cm", width = 20, height = 15) 
+
+#Dunn post-hoc test
+dunn_cn <- dunn.test(cn_trees$c_n, cn_trees$code_two, method = "bonferroni") #invasives differ significantly from natives
 
 
 
