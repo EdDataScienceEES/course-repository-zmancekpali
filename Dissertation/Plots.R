@@ -21,7 +21,7 @@ ggmap::register_google(key = "AIzaSyDnersipSvcXuK4tCDbr8NOpa-qsrYf9pc",
                        write = TRUE) #register your own Google API Key here
 
 #Data
-leaves <- read.csv("og_traits.csv")
+leaves <- read.csv("traits_analysis.csv")
 
 leaves <- leaves %>% 
   select("type", "code", "latin_name", "long", "lat") %>%  #select the relevant columns
