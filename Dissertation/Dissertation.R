@@ -122,7 +122,6 @@ bartlett.test(transformed_lma ~ type, data = nns) #heteroscedascity
                            y = lma, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop("LMA (g/cm"^2*")"))) + 
@@ -163,7 +162,6 @@ kruskal.test(chl ~ type, data = nns) #0.0004246; significant
                            y = chl, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop("Average chlorophyll (SPAD)"))) + 
@@ -203,7 +201,6 @@ kruskal.test(A ~ type, data = nns) #0.002847; significant
                          y = A, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop(paste("Assimilation rate (", mu, "mol CO"[2]~"m"^-2*~"s"^-1, ")")))) +
@@ -245,7 +242,6 @@ kruskal.test(ldcm ~ type, data = nns) #0.0008243; significant
                             y = ldcm, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop(paste("Leaf dry matter concentration (g" ~ "g"^-1~")")))) +
@@ -274,7 +270,6 @@ anova(e_mod) #NS; p-value = 0.3313
                          y = E, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop(paste("Evapotranspiration rate (", mu, "mol CO"[2] ~ "m"^-2*~"s"^-1, ")")))) +
@@ -316,7 +311,6 @@ kruskal.test(g ~ type, data = nns) #0.03313; significant
                          y = g, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop(paste("Stomatal conductance rate (", mu, "mol CO"[2] ~ "m"^-2*~"s"^-1, ")")))) +
@@ -357,7 +351,6 @@ bartlett.test(transformed_c ~ type, data = cn_nns) #homoscedascity
                            y = C, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop("% Carbon by dry weight"))) + 
@@ -396,7 +389,6 @@ bartlett.test(transformed_n ~ type, data = cn_nns) #heteroscedascity
                          y = N, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop("% Nitrogen by dry weight"))) + 
@@ -435,7 +427,6 @@ bartlett.test(transformed_cn ~ type, data = cn_nns) #heteroscedascity
                          y = c_n, fill = type)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = traits.palette) + 
     labs(x = "\n Invasion status", 
          y = expression(atop("C:N"))) + 
@@ -482,7 +473,6 @@ bartlett.test(transformed_lma2 ~ type, data = trees) #heteroscedascity
                            y = lma, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -531,7 +521,6 @@ bartlett.test(transformed_chl2 ~ type, data = trees) #heteroscedascity
                             y = chl, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -572,7 +561,6 @@ anova(ldcm_mod2)
                             y = ldcm, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -623,7 +611,6 @@ bartlett.test(transformed_a2 ~ type, data = trees) #heteroscedascity
                           y = A, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -662,7 +649,6 @@ anova(e_mod2) #NS; p-value = 0.9352
                           y = E, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -711,7 +697,6 @@ bartlett.test(transformed_g2 ~ type, data = trees) #homoscedascity
                           y = g, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                  "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                  "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
@@ -763,7 +748,6 @@ bartlett.test(transformed_cn2 ~ code_two, data = cn_trees) #homoscedascity
                           y = c_n, fill = code_two)) + 
     geom_boxplot() + #creates the boxplot
     stat_boxplot(geom ='errorbar', width = 0.3) + #adds the whisker ends
-    geom_jitter() + #adds the jitter
     scale_fill_manual(values = c("Invasive" = "#CD6090", "Native" = "#698B69",
                                    "Naturalised" = "#EEC900", "C. bullatus" = "steelblue3",
                                    "Q. cerris" = "steelblue3", "Q. ilex" = "steelblue3",
