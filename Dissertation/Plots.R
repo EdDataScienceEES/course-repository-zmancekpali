@@ -21,7 +21,7 @@ ggmap::register_google(key = "AIzaSyDnersipSvcXuK4tCDbr8NOpa-qsrYf9pc",
                        write = TRUE) #register your own Google API Key here
 
 #Data
-leaves <- read.csv("traits_analysis.csv")
+leaves <- read.csv("traits_analysis2.csv")
 
 
 leaves <- leaves %>% 
@@ -32,6 +32,9 @@ leaves <- leaves %>%
                        "Native" = "Native species")) %>%  #recode the invasion type names
   distinct(long, lat, .keep_all = TRUE) #remove multiple rows (avoids overplotting)
 
+(leaves_counts <- leaves %>%
+    group_by(type) %>%
+    summarise(unique_species = n_distinct(code)))
 
 
 #Maps
@@ -73,7 +76,7 @@ ggsave("rbge_map_simple.jpg", rbge_simple_map, path = "Plots", units = "cm",
         legend.background = element_rect(fill = "white", color = "white"),
         legend.key.size = unit(1.5, "line")) +
   ggrepel::geom_label_repel(data = leaves, aes(x = long, y = lat, label = code),
-                            max.overlaps = 50, box.padding = 0.5, 
+                            max.overlaps = 20, box.padding = 0.5, 
                             point.padding = 0.1, segment.color = "white", 
                             size = 3, fontface = "plain") +
   annotation_north_arrow(location = "tl", which_north = "true", 
