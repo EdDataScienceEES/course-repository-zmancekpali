@@ -1,0 +1,26 @@
+{
+    "id": "1B4ED3D9",
+    "path": "~/Personal repo - zmancekpali/Dissertation/Dissertation.R",
+    "project_path": "Dissertation/Dissertation.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": true,
+    "created": 1710344267235.0,
+    "source_on_save": false,
+    "relative_order": 1,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "494,41",
+        "scrollLine": "489"
+    },
+    "folds": "100|5|139|0|\n140|21|178|0|\n179|19|209|0|\n210|6|238|0|\n239|24|267|0|\n268|6|307|0|\n308|5|349|0|\n351|5|396|0|\n397|21|443|0|\n444|6|479|0|\n516|25|548|0|\n549|6|599|0|\n600|5|646|0|\n648|10|658|0|\n659|10|667|0|\n668|8|676|0|\n677|11|685|0|\n686|8|694|0|\n695|11|704|0|\n705|10|717|0|\n722|26|753|0|\n754|26|786|0|\n787|21|824|0|\n825|35|897|0|\n",
+    "lastKnownWriteTime": 1710790247,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1710790627587,
+    "read_only": false,
+    "read_only_alternatives": []
+}
