@@ -17,6 +17,21 @@
                 "package_name": ""
             },
             {
+                "id": 3,
+                "path": "~/Personal repo - zmancekpali/Dissertation/Dissertation.R",
+                "line_number": 349,
+                "function_steps": "",
+                "function_name": "toplevel",
+                "state": 1,
+                "editor_state": 1,
+                "editor_line_number": 349,
+                "is_pending_debug_completion": false,
+                "needs_updated_steps": true,
+                "type": 1,
+                "is_package_breakpoint": false,
+                "package_name": ""
+            },
+            {
                 "id": 4,
                 "path": "~/Personal repo - zmancekpali/Dissertation/Dissertation.R",
                 "line_number": 419,
@@ -145,21 +160,6 @@
                 "state": 1,
                 "editor_state": 1,
                 "editor_line_number": 108,
-                "is_pending_debug_completion": false,
-                "needs_updated_steps": true,
-                "type": 1,
-                "is_package_breakpoint": false,
-                "package_name": ""
-            },
-            {
-                "id": 29,
-                "path": "~/Personal repo - zmancekpali/Dissertation/Dissertation.R",
-                "line_number": 601,
-                "function_steps": "",
-                "function_name": "toplevel",
-                "state": 1,
-                "editor_state": 1,
-                "editor_line_number": 601,
                 "is_pending_debug_completion": false,
                 "needs_updated_steps": true,
                 "type": 1,
